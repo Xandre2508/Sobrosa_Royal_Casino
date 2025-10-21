@@ -11,6 +11,8 @@
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -46,17 +48,17 @@
 
     <main>
         
-        <section class="container-fluid bg-light p-5 text-center hero-section">
+        <section class="container-fluid bg-light p-5 text-center hero-section animate__animated animate__fadeInDown">
             <h1 class="display-4">Projeto AeroSolanum</h1>
             <p class="lead">A investigar a ingrausibilidade térmica de batata na produção de combustível ecológico para aeronaves.</p>
         </section>
 
         <section class="container my-5">
-            <h2 class="text-center mb-4">A Nossa Equipa</h2>
+            <h2 class="text-center mb-4 animate__animated animate__fadeIn" data-animate-delay="0.2s">A Nossa Equipa</h2>
             
             <div class="row g-4">
                 
-                <div class="col-12 col-md-6 col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4 scroll-animate animate__animated animate__fadeInUp">
                     <div class="card text-center">
                         <img src="https://via.placeholder.com/300x300.png?text=Foto+Equipa" class="card-img-top" alt="Retrato da Dra. Eliana Silva">
                         <div class="card-body">
@@ -66,7 +68,7 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-md-6 col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4 scroll-animate animate__animated animate__fadeInUp" data-animate-delay="0.3s">
                     <div class="card text-center">
                         <img src="https://via.placeholder.com/300x300.png?text=Foto+Equipa" class="card-img-top" alt="Retrato do Eng. Rui Costa">
                         <div class="card-body">
@@ -76,7 +78,7 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-md-6 col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4 scroll-animate animate__animated animate__fadeInUp" data-animate-delay="0.6s">
                     <div class="card text-center">
                         <img src="https://via.placeholder.com/300x300.png?text=Foto+Equipa" class="card-img-top" alt="Retrato de Téc. Ana Santos">
                         <div class="card-body">
@@ -128,5 +130,27 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     
     <script src="js/script.js"></script>
+    
+    <script>
+        function checkScrollAnimations() {
+            const elements = document.querySelectorAll('.scroll-animate');
+            elements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                // Verifica se o elemento está pelo menos 80% na viewport
+                if (rect.top < window.innerHeight * 0.8) {
+                    el.classList.add('animate__active');
+                    // Adiciona um pequeno atraso, se especificado
+                    const delay = el.getAttribute('data-animate-delay');
+                    if(delay) {
+                        el.style.setProperty('--animate-delay', delay);
+                    }
+                }
+            });
+        }
+        
+        // Inicia a função ao carregar a página e ao fazer scroll
+        window.addEventListener('scroll', checkScrollAnimations);
+        window.addEventListener('load', checkScrollAnimations);
+    </script>
 </body>
 </html>
