@@ -48,7 +48,7 @@
         
         <div class="row g-5">
             
-            <div class="col-lg-6 scroll-animate animate__animated animate__fadeInLeft">
+            <div class="col-lg-6 scroll-animate animate__fadeInLeft">
                 <h2>LabInova</h2>
                 <p>Entre em contacto com o nosso laboratório para questões institucionais ou parcerias.</p>
                 
@@ -74,7 +74,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-6 scroll-animate animate__animated animate__fadeInRight">
+            <div class="col-lg-6 scroll-animate animate__fadeInRight">
                 <h2>Envie-nos uma Mensagem</h2>
                 
                 <div id="form-message" class="mt-3"></div>
@@ -148,9 +148,16 @@
             const elements = document.querySelectorAll('.scroll-animate');
             elements.forEach(el => {
                 const rect = el.getBoundingClientRect();
-                // Verifica se o elemento está pelo menos 80% na viewport
-                if (rect.top < window.innerHeight * 0.8) {
-                    el.classList.add('animate__active');
+                // Verifica se o elemento está pelo menos 80% na viewport E se ainda não foi ativado
+                if (rect.top < window.innerHeight * 0.8 && !el.classList.contains('scroll-animate--visible')) {
+                    
+                    // 1. Torna o elemento visível (fade-in)
+                    el.classList.add('scroll-animate--visible');
+                    
+                    // 2. Adiciona a classe principal do Animate.css para forçar a animação
+                    // A classe de animação (ex: animate__fadeInUp) já está no HTML
+                    el.classList.add('animate__animated');
+                    
                     // Adiciona um pequeno atraso, se especificado
                     const delay = el.getAttribute('data-animate-delay');
                     if(delay) {

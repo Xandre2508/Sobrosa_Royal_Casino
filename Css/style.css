@@ -80,19 +80,19 @@ a:hover {
 
 
 /* =================================
-   Animações de Scroll Reveal
+   Animações de Scroll Reveal (CORRIGIDO)
    ================================= */
-/* Inicialmente, todos os elementos com esta classe estão transparentes e fora do ecrã */
+/* Inicialmente, todos os elementos com a classe .scroll-animate estão invisíveis */
 .scroll-animate {
     opacity: 0;
     visibility: hidden;
-    /* Ajusta a duração da animação para um aspeto mais suave */
+    /* Remove a animação inicial para ser ativada por JS */
     animation-duration: 1s; 
+    transition: opacity 0.5s; 
 }
 
-/* Quando o JS deteta que o elemento está na vista, ele ganha a classe 'animate__active'
-   que anula o estado inicial e permite que a animação CSS (Animate.css) se execute. */
-.scroll-animate.animate__active {
+/* Quando o JS deteta que o elemento está na vista, adiciona esta classe: */
+.scroll-animate.scroll-animate--visible {
     opacity: 1;
     visibility: visible;
 }

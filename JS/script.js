@@ -58,6 +58,3 @@ document.addEventListener('DOMContentLoaded', function() {
     // Exemplo: Função para realçar o link ativo na navegação
     // (Esta lógica é já tratada pelo Bootstrap com a classe 'active', mas pode ser estendida aqui)
 });
-
-// Nota: A lógica do scroll reveal foi adicionada diretamente no final de cada ficheiro HTML
-// para garantir que dependesse apenas das funções da janela e do DOM.

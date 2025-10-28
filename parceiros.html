@@ -46,21 +46,21 @@
     <main class="container my-5">
         <h1 class="text-center display-5 mb-5 animate__animated animate__fadeInDown">Parceiros e Investidores</h1>
 
-        <section class="mb-5 scroll-animate animate__animated animate__fadeInUp">
+        <section class="mb-5 scroll-animate animate__fadeInUp">
             <h2 class="h3 text-center mb-4">Parceiros Académicos</h2>
             <div class="row g-4 d-flex align-items-center justify-content-center">
                 
-                <div class="col-6 col-md-4 col-lg-3 text-center scroll-animate animate__animated animate__zoomIn">
+                <div class="col-6 col-md-4 col-lg-3 text-center scroll-animate animate__zoomIn">
                     <a href="#" title="Universidade da Inovação">
                         <img src="https://via.placeholder.com/200x100.png?text=UniInova" class="img-fluid" alt="Logótipo da Universidade da Inovação">
                     </a>
                 </div>
-                <div class="col-6 col-md-4 col-lg-3 text-center scroll-animate animate__animated animate__zoomIn" data-animate-delay="0.3s">
+                <div class="col-6 col-md-4 col-lg-3 text-center scroll-animate animate__zoomIn" data-animate-delay="0.3s">
                     <a href="#" title="Centro de Biotecnologia">
                         <img src="https://via.placeholder.com/200x100.png?text=CentroBio" class="img-fluid" alt="Logótipo do Centro de Biotecnologia">
                     </a>
                 </div>
-                <div class="col-6 col-md-4 col-lg-3 text-center scroll-animate animate__animated animate__zoomIn" data-animate-delay="0.6s">
+                <div class="col-6 col-md-4 col-lg-3 text-center scroll-animate animate__zoomIn" data-animate-delay="0.6s">
                     <a href="#" title="Instituto AgroTech">
                         <img src="https://via.placeholder.com/200x100.png?text=AgroTech" class="img-fluid" alt="Logótipo do Instituto AgroTech">
                     </a>
@@ -69,16 +69,16 @@
             </div>
         </section>
 
-        <section class="scroll-animate animate__animated animate__fadeInUp" data-animate-delay="0.8s">
+        <section class="scroll-animate animate__fadeInUp" data-animate-delay="0.8s">
             <h2 class="h3 text-center mb-4">Investidores e Patrocinadores</h2>
             <div class="row g-4 d-flex align-items-center justify-content-center">
                 
-                <div class="col-6 col-md-4 col-lg-3 text-center scroll-animate animate__animated animate__zoomIn">
+                <div class="col-6 col-md-4 col-lg-3 text-center scroll-animate animate__zoomIn">
                     <a href="#" title="AeroInvest Capital">
                         <img src="https://via.placeholder.com/200x100.png?text=AeroInvest" class="img-fluid" alt="Logótipo da AeroInvest Capital">
                     </a>
                 </div>
-                <div class="col-6 col-md-4 col-lg-3 text-center scroll-animate animate__animated animate__zoomIn" data-animate-delay="0.3s">
+                <div class="col-6 col-md-4 col-lg-3 text-center scroll-animate animate__zoomIn" data-animate-delay="0.3s">
                     <a href="#" title="Fundo Verde Europeu">
                         <img src="https://via.placeholder.com/200x100.png?text=Fundo+Verde" class="img-fluid" alt="Logótipo do Fundo Verde Europeu">
                     </a>
@@ -131,9 +131,16 @@
             const elements = document.querySelectorAll('.scroll-animate');
             elements.forEach(el => {
                 const rect = el.getBoundingClientRect();
-                // Verifica se o elemento está pelo menos 80% na viewport
-                if (rect.top < window.innerHeight * 0.8) {
-                    el.classList.add('animate__active');
+                // Verifica se o elemento está pelo menos 80% na viewport E se ainda não foi ativado
+                if (rect.top < window.innerHeight * 0.8 && !el.classList.contains('scroll-animate--visible')) {
+                    
+                    // 1. Torna o elemento visível (fade-in)
+                    el.classList.add('scroll-animate--visible');
+                    
+                    // 2. Adiciona a classe principal do Animate.css para forçar a animação
+                    // A classe de animação (ex: animate__fadeInUp) já está no HTML
+                    el.classList.add('animate__animated');
+                    
                     // Adiciona um pequeno atraso, se especificado
                     const delay = el.getAttribute('data-animate-delay');
                     if(delay) {
