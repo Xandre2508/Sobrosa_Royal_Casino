@@ -91,23 +91,21 @@ header {
 
 .brand {
     display: flex;
-    gap: 12px;
+    gap: 0px;
     align-items: center;
     text-decoration: none;
     color: inherit;
 }
 
 .logo {
-    width: 52px;
-    height: 52px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #ffc107, #ff6f61);
+    width: 300px;
+    height: 300px;
+    border-radius: 100px;
     display: grid;
     place-items: center;
     color: #0b1020;
     font-weight: 700;
     font-size: 20px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.5), inset 0 -6px 24px rgba(255,255,255,0.06);
 }
 
 nav {
