@@ -43,7 +43,33 @@ body {
    2. COMPONENTES REUTILIZÁVEIS (Botões, Inputs, Labels)
    ========================================================================== */
 /* Botões Gerais */
+
 .btn {
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.06));
+    border: 1px solid rgba(255,255,255,0.04);
+    color: var(--accent);
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    transition: opacity 0.2s;
+}
+
+.btnlogin {
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.06));
+    border-width: 10px #ff8a65;
+    border-color: #ff8a65;
+    color: var(--accent);
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    transition: opacity 0.2s;
+}
+
+.btnregisto {
     background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.06));
     border: 1px solid rgba(255,255,255,0.04);
     color: var(--accent);
@@ -125,7 +151,7 @@ nav {
 }
 
 .nav-link:hover {
-    color: var(--accent);
+    color: #ff8a65;
     background: var(--glass);
 }
 
