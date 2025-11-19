@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Página Inicial — Casino Demo</title>
+    <meta name="description" content="Site demo de casino com página inicial, cartões de jogos, login e contactos." />
+    <link rel="stylesheet" href="EstiloBaseDoCasino.css" />
+   
+</head>
+<body>
+    <header>
+        <a class="brand" href="#">
+            <div class="logo" aria-hidden>CC</div>
+            <div>
+                <div style="font-weight:800">Sobrosa Royal </div>
+                <div style="font-size:13px;color:var(--muted)">Jogos e promoções</div>
+            </div>
+        </a>
+
+        <nav aria-label="principal">
+            <a class="nav-link" href="#jogos">Jogos</a>
+            <a class="nav-link" href="#promos">Promoções</a>
+            <a class="nav-link" href="#sobre">Sobre</a>
+        </nav>
+
+        <div class="controls">
+            <button class="btn" id="openLogin">Entrar</button>
+            <button class="btn" id="openRegister" style="background:linear-gradient(90deg,var(--accent),#ff8a65);color:#0b1020">Registar</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" role="region" aria-label="Introdução">
+            <div>
+                <h1>Bem-vindo ao Sobrosa Royal</h1>
+                <p>Descubra jogos populares, participe em promoções e ganhe prémios.
+                    Junta te ao sobrosa royal e comece a jogar hoje mesmo!
+                </p>F
+
+                <div class="cta-row">
+                    <div class="search" role="search">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden style="opacity:.8"><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <input id="q" placeholder="Procurar jogos, slots..." aria-label="Procurar jogos" />
+                    </div>
+                    <button class="btn" id="explore">Explorar jogos</button>
+                </div>
+
+                <div style="display:flex;gap:12px;margin-top:18px">
+                    <div class="stats">
+                        <div class="stat"><span>Jogadores online</span><strong id="onlineCount">1,254</strong></div>
+                        <div class="stat"><span>Prémio em destaque</span><strong>€12,400</strong></div>
+                    </div>
+                    <div class="stats">
+                        <div class="stat"><span>Bónus</span><span class="pill">50% primeiro depósito</span></div>
+                        <div class="stat"><span>Suporte</span><span class="pill">24/7</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <aside aria-hidden>
+                <div style="display:flex;flex-direction:column;gap:12px;align-items:stretch">
+                    <div style="background:linear-gradient(90deg,#2dd4bf,#60a5fa);padding:14px;border-radius:10px;color:#04263b">
+                        <strong>Oferta do mês</strong>
+                        <div style="margin-top:8px;font-size:14px;color:#04263b">Rotação grátis e bónus progressivo</div>
+                    </div>
+
+                    <div style="background:linear-gradient(90deg,#ff7ab6,#7c4dff);padding:14px;border-radius:10px;color:white">
+                        <strong>Evento ao vivo</strong>
+                        <div style="margin-top:8px;font-size:14px">Torres de jackpots — hoje às 20:00</div>
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+        <section id="jogos" aria-label="Jogos" style="margin-top:6px">
+            <h2 style="margin:0 0 8px">Jogos populares</h2>
+            <div class="games" id="gamesGrid">
+                <!-- Cards injected by script -->
+            </div>
+        </section>
+
+        <section id="promos" aria-label="Promoções">
+            <h2 style="margin:16px 0 8px">Promoções em destaque</h2>
+            <div style="display:flex;gap:12px;flex-wrap:wrap">
+                <div class="card" style="flex:1;min-width:220px">
+                    <h3>Rodadas grátis semanais</h3>
+                    <p class="muted">Gire sem custo em slots selecionados todas as sextas-feiras.</p>
+                    <div class="meta">
+                        <span class="pill">Sem código</span>
+                        <button class="btn" style="padding:8px 10px" onclick="alert('Subscrito!')">Participar</button>
+                    </div>
+                </div>
+
+                <div class="card" style="flex:1;min-width:220px">
+                    <h3>Campeonato de Blackjack</h3>
+                    <p class="muted">Entradas abertas — prémios até €5,000</p>
+                    <div class="meta">
+                        <span class="pill">Ao vivo</span>
+                        <button class="btn" style="padding:8px 10px" onclick="alert('Inscrição enviada!')">Inscrever</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sobre" aria-label="Sobre" style="margin-top:16px">
+            <h2 style="margin:0 0 8px">Sobre nós</h2>
+            <p style="color:var(--muted)">Casino Clube é uma demo construída para fins educativos e de demonstração. Este site não processa dinheiro real.</p>
+        </section>
+
+    </main>
+
+    <footer>
+        <div>© <span id="year"></span> Casino Clube — Demo</div>
+        <div style="display:flex;gap:12px">
+            <a class="nav-link" href="#" style="padding:6px 8px">Termos</a>
+            <a class="nav-link" href="#" style="padding:6px 8px">Privacidade</a>
+            <a class="nav-link" href="#" style="padding:6px 8px">Contacto</a>
+        </div>
+    </footer>
+
+    <!-- Modal overlay -->
+    <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="modal" role="document" id="modalContent">
+            <h2 id="modalTitle">Entrar</h2>
+            <form id="authForm" autocomplete="off">
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input id="email" type="email" required placeholder="utilizador@exemplo.com" />
+                </div>
+                <div class="field">
+                    <label for="password">Palavra-passe</label>
+                    <input id="password" type="password" required minlength="6" placeholder="••••••" />
+                </div>
+                <div class="actions">
+                    <button type="button" class="btn" id="closeModal">Cancelar</button>
+                    <button type="submit" class="btn" style="background:linear-(90deg,var(--accent),#ff8a65);color:#0b1020">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="JogosCasino.js"></script>
+
+    <script>
+        // Verifica se os jogos carregaram corretamente
+        if (typeof window.listaDeJogos === 'undefined') {
+            alert("Erro: Não consegui encontrar o ficheiro JogosCasino.js! Verifica se o nome está correto.");
+        }
+
+        const games = window.listaDeJogos || []; // Vai buscar a lista ao outro ficheiro
+        const grid = document.getElementById('gamesGrid');
+
+        // Função para desenhar os jogos
+        function renderGames(list){
+            grid.innerHTML = '';
+            // Se a lista estiver vazia, não faz nada
+            if(!list || list.length === 0) return;
+
+            list.forEach(g => {
+                const card = document.createElement('article');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="thumb" style="background:linear-gradient(120deg, ${g.color}, rgba(0,0,0,0.15));">${g.type}</div>
+                    <h3>${g.title}</h3>
+                    <p>${g.desc}</p>
+                    <div class="meta">
+                        <span class="pill">${g.type}</span>
+                        <button class="btn" data-id="${g.id}" aria-label="Jogar ${g.title}" style="padding:8px 10px">Jogar</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Inicializa
+        renderGames(games);
+
+        // Lógica do clique "Jogar"
+        grid.addEventListener('click', (e) => {
+            const btn = e.target.closest('button[data-id]');
+            if(!btn) return;
+            
+            const id = Number(btn.dataset.id);
+            const game = games.find(g => g.id === id);
+            
+            if (game && game.url) {
+                window.location.href = game.url;
+            } else {
+                alert(`Demo: ${game.title} — Link ainda não configurado.`);
+            }
+        });
+
+        // Pesquisa
+        document.getElementById('q').addEventListener('input', (e)=>{
+            const q = e.target.value.toLowerCase().trim();
+            renderGames(games.filter(g => g.title.toLowerCase().includes(q) || g.type.toLowerCase().includes(q)));
+        });
+
+        // --- MANTÉM O RESTO DO TEU CÓDIGO (MODAL, ETC) IGUAL ---
+        const overlay = document.getElementById('overlay');
+        const modalTitle = document.getElementById('modalTitle');
+        const openLogin = document.getElementById('openLogin');
+        const openRegister = document.getElementById('openRegister');
+        const closeModal = document.getElementById('closeModal');
+        const authForm = document.getElementById('authForm');
+
+        function openModal(mode='login'){
+            modalTitle.textContent = mode === 'login' ? 'Entrar' : 'Registar';
+            overlay.classList.add('open');
+            overlay.setAttribute('aria-hidden','false');
+            document.getElementById('email').focus();
+        }
+        function close(){
+            overlay.classList.remove('open');
+            overlay.setAttribute('aria-hidden','true');
+            authForm.reset();
+        }
+        openLogin.addEventListener('click', ()=>openModal('login'));
+        openRegister.addEventListener('click', ()=>openModal('register'));
+        closeModal.addEventListener('click', close);
+        overlay.addEventListener('click', (e)=>{ if(e.target === overlay) close(); });
+        document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); });
+
+        authForm.addEventListener('submit', (e)=>{
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            alert(`Simulação: ${email}`);
+            close();
+        });
+
+        document.getElementById('explore').addEventListener('click', ()=>{ location.href = '#jogos'; });
+        document.getElementById('year').textContent = new Date().getFullYear();
+        const onlineCountEl = document.getElementById('onlineCount');
+        let online = 1254;
+        setInterval(()=>{ online += Math.floor(Math.random()*6-2); if(online<200) online=200; onlineCountEl.textContent = online.toLocaleString(); }, 3000);
+    </script>
+      
+</body>
+</html></div></section></div></aside></div>
