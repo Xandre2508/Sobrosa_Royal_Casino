@@ -214,6 +214,7 @@ ul { list-style: none; }
     /* Texto na parte de baixo do retângulo */
 .owner-details {
         z-index: 1;
+        margin-bottom: -17px;
         text-align: center;
         background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
         width: 100%;
