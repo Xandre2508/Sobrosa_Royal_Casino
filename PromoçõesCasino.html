@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promoções - Sobrosa Royal Casino</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Estilos.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="Pagina-Inicial-Casino.html" class="logo, logo-text"> </a>
+            <div class="logo">
+                <img src="./Imagens-Casino/SobrosaRoyalCasino.png" class="logo-img" alt="Sobrosa Logo" style="width: 200px; height: 200px;" >
+                <div class="logo-text">
+                    <h1>SOBROSA ROYAL</h1>
+                    <span>Casino • Ofertas</span>
+                </div>
+            </div>
+
+            <div class="nav-links">
+                <a href="Pagina-Inicial-Casino.html">Inicio</a>
+                <a href="Pagina-Inicial-Casino.html#jogos">Jogos</a>
+                <a href="PromoçõesCasino.html" class="active">Promoções</a>
+                <a href="#">VIP</a>
+                <a href="Sobre.html">Sobre</a>
+            </div>
+
+            <div class="nav-actions">
+                <button class="btn btn-outline" id="openLogin">ENTRAR</button>
+                <button class="btn btn-gradient" id="openRegister">REGISTO</button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-bg">
+            <img src="./Imagens-Casino/casinobackground.png" alt="Fundo Promo">
+            <div class="hero-overlay"></div>
+            <div class="hero-gradient"></div>
+        </div>
+
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <span class="hero-tag"><i class="fa-solid fa-gift"></i> Ofertas Limitadas</span>
+                <h1 class="hero-title">
+                    Multiplica a tua <br>
+                    <span class="text-gradient">Sorte</span>
+                </h1>
+                <p class="hero-desc">
+                    Aproveita os nossos bónus exclusivos, rodadas grátis e programas de cashback. No Sobrosa Royal, cada depósito vale mais.
+                </p>
+            </div>
+            
+            <div class="hero-card">
+                <div class="promo-card" style="border: 2px solid #d4af37; box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);">
+                    <span class="promo-badge" style="background: #d4af37; color: #000;">Destaque</span>
+                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 10px;">Mega Pack Inicial</h3>
+                    <p style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 20px;">Até €500 + 100 Rodadas Grátis</p>
+                    <button class="btn btn-gradient" style="width: 100%; justify-content: center;">Reivindicar Agora</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <h2 style="font-size: 2rem; font-weight: 700;">Todas as Ofertas</h2>
+                    <p style="color: var(--text-gray);">Escolhe a promoção ideal para o teu estilo de jogo.</p>
+                </div>
+            </div>
+
+            <div class="games-grid">
+                
+                <div class="game-card">
+                    <div class="card-visual" style="background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 100%); display: flex; align-items: center; justify-content: center; height: 160px;">
+                        <i class="fa-solid fa-rocket text-gold" style="font-size: 3rem;"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Bónus de Boas-vindas</h3>
+                        <p style="font-size: 0.9rem; color: #9ca3af;">100% no 1º depósito até €200.</p>
+                        <div class="card-footer" style="margin-top: 15px;">
+                            <span class="tag">Novos</span>
+                            <button class="btn btn-outline" style="padding: 5px 15px; font-size: 0.8rem;">Ver Mais</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="card-visual" style="background: linear-gradient(135deg, #0f172a 0%, #334155 100%); display: flex; align-items: center; justify-content: center; height: 160px;">
+                        <i class="fa-brands fa-bitcoin text-primary" style="font-size: 3rem;"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Bónus Crypto</h3>
+                        <p style="font-size: 0.9rem; color: #9ca3af;">Deposita com Bitcoin e ganha 150% extra.</p>
+                        <div class="card-footer" style="margin-top: 15px;">
+                            <span class="tag">Crypto</span>
+                            <button class="btn btn-outline" style="padding: 5px 15px; font-size: 0.8rem;">Ver Mais</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="card-visual" style="background: linear-gradient(135deg, #3f6212 0%, #65a30d 100%); display: flex; align-items: center; justify-content: center; height: 160px;">
+                        <i class="fa-solid fa-rotate-left" style="color: #fff; font-size: 3rem;"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Cashback Semanal</h3>
+                        <p style="font-size: 0.9rem; color: #9ca3af;">Recebe 10% das tuas perdas todas as segundas.</p>
+                        <div class="card-footer" style="margin-top: 15px;">
+                            <span class="tag">Regular</span>
+                            <button class="btn btn-outline" style="padding: 5px 15px; font-size: 0.8rem;">Ver Mais</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="card-visual" style="background: linear-gradient(135deg, #831843 0%, #be185d 100%); display: flex; align-items: center; justify-content: center; height: 160px;">
+                        <i class="fa-solid fa-dice" style="color: #fca5a5; font-size: 3rem;"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Drops & Wins</h3>
+                        <p style="font-size: 0.9rem; color: #9ca3af;">Prémios aleatórios nas mesas ao vivo.</p>
+                        <div class="card-footer" style="margin-top: 15px;">
+                            <span class="tag">Ao Vivo</span>
+                            <button class="btn btn-outline" style="padding: 5px 15px; font-size: 0.8rem;">Ver Mais</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section style="background: #0f172a; padding: 40px 0; text-align: center;">
+        <div class="container">
+            <p style="color: #64748b; font-size: 0.85rem; max-width: 800px; margin: 0 auto;">
+                *Aplicam-se Termos e Condições Gerais. É necessário ter mais de 18 anos para jogar. 
+                Os bónus têm requisitos de aposta (wagering) de 35x antes de levantamento. Jogue com responsabilidade.
+            </p>
+        </div>
+    </section>
+
+ <footer class="footer">
+        <div class="container">
+            
+            <div class="footer-grid">
+                
+                <div class="footer-col">
+                    <h4 class="footer-title brand-title">SOBROSA ROYAL</h4>
+                    <p class="footer-desc">
+                        Casino Clube é uma demo construída para fins educativos e de demonstração. Este site não processa dinheiro real.
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h4 class="footer-title">Casino</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Slots</a></li>
+                        <li><a href="#">Roleta</a></li>
+                        <li><a href="#">Blackjack</a></li>
+                        <li><a href="#">Live Casino</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4 class="footer-title">Suporte</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Contacte-nos</a></li>
+                        <li><a href="#">Termos e Condições</a></li>
+                        <li><a href="#">Jogo Responsável</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4 class="footer-title">Pagamentos Seguros</h4>
+                    <div class="payment-icons">
+                        <i class="fa-brands fa-cc-visa"></i>
+                        <i class="fa-brands fa-cc-mastercard"></i>
+                        <i class="fa-brands fa-bitcoin"></i>
+                        <i class="fa-brands fa-cc-paypal"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Casino Clube — Demo. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="modal" role="document" id="modalContent">
+            <h2 id="modalTitle">login</h2>
+            <form id="authForm" autocomplete="off">
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input id="email" type="email" required placeholder="utilizador@exemplo.com" />
+                </div>
+                <div class="field">
+                    <label for="password">Palavra-passe</label>
+                    <input id="password" type="password" required minlength="6" placeholder="••••••" />
+                </div>
+                <div class="actions">
+                    <button type="button" class="btn" id="closeModal">Cancelar</button>
+                    <button type="submit" class="btn">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Reutilização do script de modal
+        const overlay = document.getElementById('overlay');
+        const modalTitle = document.getElementById('modalTitle');
+        const openLogin = document.getElementById('openLogin');
+        const openRegister = document.getElementById('openRegister');
+        const closeModal = document.getElementById('closeModal');
+        
+        function openModal(mode='login'){
+            modalTitle.textContent = mode === 'login' ? 'Entrar' : 'Registar';
+            overlay.classList.add('open');
+            overlay.setAttribute('aria-hidden','false');
+        }
+        function close(){
+            overlay.classList.remove('open');
+            overlay.setAttribute('aria-hidden','true');
+        }
+        if(openLogin) openLogin.addEventListener('click', ()=>openModal('login'));
+        if(openRegister) openRegister.addEventListener('click', ()=>openModal('register'));
+        if(closeModal) closeModal.addEventListener('click', close);
+        overlay.addEventListener('click', (e)=>{ if(e.target === overlay) close(); });
+    </script>
+
+</body>
+</html>
