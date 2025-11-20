@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Crash - Sobrosa Royal Casino</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="Estilos.css">
+
+    <style>
+        /* --- ESTILOS ESPECÍFICOS DO CRASH --- */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow: hidden; /* Evita scroll durante o jogo */
+        }
+
+        .game-wrapper {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 80px); /* Desconta a altura da navbar */
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /* Painel de Controlo (Esquerda) */
+        .control-panel {
+            width: 350px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .bet-input-group label {
+            display: block;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .bet-input-wrapper {
+            position: relative;
+        }
+
+        .bet-input-wrapper input {
+            width: 100%;
+            background: #0f172a;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            outline: none;
+        }
+
+        .currency-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gold);
+        }
+
+        /* Botão Grande de Ação */
+        #actionBtn {
+            width: 100%;
+            height: 60px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            margin-top: auto; /* Empurra para o fundo se houver espaço */
+            transition: 0.2s;
+        }
+
+        .btn-bet { background: var(--primary); color: white; box-shadow: 0 0 15px rgba(255,136,96,0.3); }
+        .btn-cashout { background: var(--gold); color: black; box-shadow: 0 0 15px rgba(251,191,36,0.3); }
+        .btn-waiting { background: #334155; color: #94a3b8; cursor: not-allowed; }
+
+        /* Área Gráfica (Direita) */
+        .graph-container {
+            flex: 1;
+            background: #0f172a; /* Fundo mais escuro para o gráfico */
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Fundo com grelha animada (efeito visual) */
+        .grid-bg {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+            animation: moveGrid 10s linear infinite;
+        }
+        
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50px, 50px); }
+        }
+
+        /* O Foguetão e o Multiplicador */
+        .game-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+
+        .rocket-icon {
+            font-size: 5rem;
+            color: var(--primary);
+            filter: drop-shadow(0 0 20px rgba(255, 136, 96, 0.6));
+            transition: transform 0.2s;
+        }
+
+        /* Animação do foguetão a tremer quando sobe */
+        .flying {
+            animation: shake 0.5s infinite;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        .multiplier-display {
+            font-size: 6rem;
+            font-weight: 900;
+            color: white;
+            margin-top: 20px;
+            font-family: 'Outfit', sans-serif; /* Garante a mesma font */
+        }
+
+        .crashed-text {
+            color: #ef4444; /* Vermelho */
+            text-shadow: 0 0 30px rgba(239, 68, 68, 0.5);
+        }
+        
+        .winner-text {
+            color: #4ade80; /* Verde */
+        }
+
+        /* Histórico no topo */
+        .history-bar {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 20;
+        }
+        .history-pill {
+            background: rgba(255,255,255,0.1);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .pill-green { color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
+        .pill-red { color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .pill-gold { color: var(--gold); border: 1px solid rgba(251, 191, 36, 0.3); }
+
+        /* Responsividade básica */
+        @media (max-width: 768px) {
+            .game-wrapper { flex-direction: column-reverse; height: auto; }
+            .control-panel { width: 100%; }
+            .graph-container { height: 400px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" style="position: relative; height: auto; border-bottom: 1px solid rgba(255,255,255,0.1);">
+        <div class="container nav-content" style="padding: 15px 20px;">
+            <div class="logo">
+                <div class="logo-text">
+                    <h1 style="font-size: 1.5rem;">SOBROSA ROYAL</h1>
+                    <span>Crash</span>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <div style="margin-right: 20px;">
+                    <span style="color: var(--text-gray); font-size: 0.8rem;">Saldo Demo:</span>
+                    <span class="text-gold" style="font-weight: 700; font-size: 1.1rem;">€ <span id="userBalance">1000.00</span></span>
+                </div>
+                <a href="Pagina-Inicial-Casino.html" class="btn btn-outline"><i class="fa-solid fa-arrow-left"></i> Sair</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="game-wrapper">
+        
+        <div class="control-panel">
+            <div class="bet-input-group">
+                <label>Valor da Aposta</label>
+                <div class="bet-input-wrapper">
+                    <input type="number" id="betAmount" value="10.00" min="1" step="1">
+                    <i class="fa-solid fa-euro-sign currency-icon"></i>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button class="btn btn-outline" onclick="adjustBet(0.5)">1/2</button>
+                <button class="btn btn-outline" onclick="adjustBet(2)">x2</button>
+            </div>
+
+            <div id="statusMessage" style="margin-top: 10px; min-height: 20px; color: var(--text-gray); font-size: 0.9rem; text-align: center;">
+                Insere o valor e aposta!
+            </div>
+
+            <button id="actionBtn" class="btn btn-bet">
+                APOSTAR
+            </button>
+        </div>
+
+        <div class="graph-container">
+            <div class="grid-bg"></div>
+            
+            <div class="history-bar" id="historyBar">
+                <span class="history-pill pill-red">1.20x</span>
+                <span class="history-pill pill-green">5.43x</span>
+                <span class="history-pill pill-gold">12.00x</span>
+            </div>
+
+            <div class="game-content">
+                <div id="rocket" class="rocket-icon">
+                    <i class="fa-solid fa-rocket"></i>
+                </div>
+                <div id="multiplier" class="multiplier-display">1.00x</div>
+                <div id="winningsDisplay" style="font-size: 1.5rem; color: var(--gold); height: 30px; font-weight: 700;"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Variáveis do Jogo ---
+        let balance = 1000.00;
+        let currentBet = 0;
+        let multiplier = 1.00;
+        let gameInterval;
+        let isRunning = false;
+        let hasBet = false; // Se o jogador apostou nesta ronda
+        let hasCashedOut = false; // Se o jogador já retirou
+        let crashPoint = 0;
+
+        // --- Elementos do DOM ---
+        const elBalance = document.getElementById('userBalance');
+        const elMultiplier = document.getElementById('multiplier');
+        const elRocket = document.getElementById('rocket');
+        const elBtn = document.getElementById('actionBtn');
+        const elBetInput = document.getElementById('betAmount');
+        const elStatus = document.getElementById('statusMessage');
+        const elHistory = document.getElementById('historyBar');
+        const elWinnings = document.getElementById('winningsDisplay');
+
+        // --- Funções Auxiliares ---
+        function updateBalance(val) {
+            balance = val;
+            elBalance.textContent = balance.toFixed(2);
+        }
+
+        function adjustBet(factor) {
+            let val = parseFloat(elBetInput.value);
+            if(isNaN(val)) val = 10;
+            elBetInput.value = (val * factor).toFixed(2);
+        }
+
+        function addToHistory(val) {
+            const pill = document.createElement('span');
+            pill.textContent = val.toFixed(2) + 'x';
+            pill.className = 'history-pill';
+            
+            if(val < 2) pill.classList.add('pill-red');
+            else if(val >= 10) pill.classList.add('pill-gold');
+            else pill.classList.add('pill-green');
+
+            elHistory.prepend(pill);
+            // Manter apenas os últimos 5
+            if(elHistory.children.length > 6) {
+                elHistory.removeChild(elHistory.lastChild);
+            }
+        }
+
+        // --- Lógica Principal do Jogo ---
+
+        elBtn.addEventListener('click', () => {
+            if (!isRunning) {
+                startGame();
+            } else {
+                if (hasBet && !hasCashedOut) {
+                    cashOut();
+                }
+            }
+        });
+
+        function startGame() {
+            // Validar aposta
+            const betValue = parseFloat(elBetInput.value);
+            if (isNaN(betValue) || betValue <= 0) {
+                elStatus.textContent = "Valor inválido!";
+                return;
+            }
+            if (betValue > balance) {
+                elStatus.textContent = "Saldo insuficiente!";
+                return;
+            }
+
+            // Configurar estado inicial
+            currentBet = betValue;
+            updateBalance(balance - currentBet); // Desconta a aposta
+            hasBet = true;
+            hasCashedOut = false;
+            isRunning = true;
+            multiplier = 1.00;
+            elWinnings.textContent = "";
+
+            // Definir ponto de Crash (Aleatório entre 1.00 e 10.00 para demo)
+            // A fórmula Math.random() cria um crash point. 
+            // 30% de probabilidade de crash instantâneo (perto de 1.0) para realismo.
+            crashPoint = (Math.random() * 10) + 1; 
+            if(Math.random() < 0.3) crashPoint = 1.00 + Math.random(); 
+
+            // UI Updates
+            elMultiplier.textContent = "1.00x";
+            elMultiplier.style.color = "white";
+            elRocket.classList.add('flying');
+            elRocket.style.transform = "rotate(-45deg)";
+            elBtn.textContent = "RETIRAR";
+            elBtn.className = "btn btn-cashout";
+            elStatus.textContent = "O foguetão está a subir...";
+            elBetInput.disabled = true; // Bloqueia input durante o jogo
+
+            // Loop do Jogo
+            gameInterval = setInterval(() => {
+                // Incremento do multiplicador (exponencial simples)
+                multiplier += 0.01 + (multiplier * 0.008); 
+
+                elMultiplier.textContent = multiplier.toFixed(2) + 'x';
+
+                // Verifica se o jogador está a jogar e mostra o lucro potencial
+                if(hasBet && !hasCashedOut) {
+                    let potentialWin = (currentBet * multiplier).toFixed(2);
+                    elBtn.textContent = `RETIRAR (€${potentialWin})`;
+                }
+
+                // Verifica se Crashed
+                if (multiplier >= crashPoint) {
+                    crash();
+                }
+            }, 50); // Velocidade do loop
+        }
+
+        function cashOut() {
+            if(!isRunning || hasCashedOut) return;
+            
+            hasCashedOut = true;
+            const winAmount = currentBet * multiplier;
+            updateBalance(balance + winAmount);
+            
+            // UI Feedback
+            elStatus.textContent = `Ganhaste €${winAmount.toFixed(2)}!`;
+            elWinnings.textContent = `+ €${winAmount.toFixed(2)}`;
+            elBtn.className = "btn btn-waiting";
+            elBtn.textContent = "ESPERANDO CRASH...";
+            elMultiplier.style.color = "#4ade80"; // Verde
+        }
+
+        function crash() {
+            clearInterval(gameInterval);
+            isRunning = false;
+            elRocket.classList.remove('flying');
+            elRocket.style.transform = "rotate(90deg) translate(50px, 50px)"; // Foguetão cai
+            
+            elMultiplier.textContent = "CRASHED @ " + crashPoint.toFixed(2) + "x";
+            elMultiplier.style.color = "#ef4444"; // Vermelho
+            
+            addToHistory(crashPoint);
+
+            elBetInput.disabled = false;
+
+            if(hasBet && !hasCashedOut) {
+                elStatus.textContent = "O foguetão explodiu! Perdeste a aposta.";
+                elStatus.style.color = "#ef4444";
+            } else if (hasBet && hasCashedOut) {
+                elStatus.textContent = "Boa! Retiraste antes do crash.";
+                elStatus.style.color = "#4ade80";
+            }
+
+            // Reset Botão
+            setTimeout(() => {
+                elBtn.className = "btn btn-bet";
+                elBtn.textContent = "APOSTAR";
+                elRocket.style.transform = "rotate(0deg)";
+                elStatus.style.color = "var(--text-gray)";
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
