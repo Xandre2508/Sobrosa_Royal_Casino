@@ -62,14 +62,19 @@ ul { list-style: none; }
     border: 1px solid rgba(255,255,255,0.2);
     color: #ddd;
 }
-.btn-outline:hover { border-color: white; color: white; }
+.btn-outline:hover { border-color: #ea580c; color: #ea580c; }
 
 .btn-gradient {
     background: linear-gradient(90deg, var(--primary), #ea580c);
     color: white;
+    border: 1px solid rgba(255,255,255,0.2);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
+
+.btn-gradient:hover { border-color: #ea580c; color: #ea580c; background: transparent;}
+
+
 
 .search-box { position: relative; width: 100%; max-width: 350px; }
 .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-gray); }
