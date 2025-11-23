@@ -17,9 +17,10 @@
     <nav class="navbar" style="position: relative; height: auto; border-bottom: 1px solid rgba(255,255,255,0.1);">
         <div class="container nav-content" style="padding: 15px 20px;">
             <div class="logo">
+                <img src="./Imagens-Casino/SobrosaRoyalCasino.png" class="logo-img" alt="Sobrosa Logo" style="width: 100px; height: 100px;">
                 <div class="logo-text">
                     <h1 style="font-size: 1.5rem;">SOBROSA ROYAL</h1>
-                    <span>Crash</span>
+                    <span>Space • Crash</span>
                 </div>
             </div>
             <div class="nav-actions">
@@ -163,7 +164,7 @@
             // A fórmula Math.random() cria um crash point. 
             // 30% de probabilidade de crash instantâneo (perto de 1.0) para realismo.
             crashPoint = (Math.random() * 10) + 1; 
-            if(Math.random() < 0.3) crashPoint = 1.00 + Math.random(); 
+            if(Math.random() < 0.9) crashPoint = 1.00 + Math.random(); 
 
             // UI Updates
             elMultiplier.textContent = "1.00x";
