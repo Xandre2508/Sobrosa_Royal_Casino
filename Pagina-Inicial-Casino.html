@@ -241,40 +241,24 @@
         </div>
     </footer>
 
-    <div class="overlay" id="loginOverlay">
-                <div class="modal-box">
-                    <button class="close-btn" onclick="toggleLogin()">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
+                <div class="overlay" id="loginOverlay">
+                <div class="login-card">
+                    <h2>Entrar</h2>
                     
-                    <h2>Bem-vindo de volta</h2>
-                    <p class="modal-subtitle">Insere os teus dados para entrar no Sobrosa Royal</p>
-
                     <form class="login-form">
-                        <div class="input-group">
-                            <label>Email</label>
-                            <div class="input-wrapper">
-                                <i class="fa-solid fa-envelope"></i>
-                                <input type="email" placeholder="exemplo@email.com" required>
-                            </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="utilizador@exemplo.com" required>
                         </div>
 
-                        <div class="input-group">
-                            <label>Palavra-passe</label>
-                            <div class="input-wrapper">
-                                <i class="fa-solid fa-lock"></i>
-                                <input type="password" placeholder="••••••••" required>
-                            </div>
+                        <div class="form-group">
+                            <label for="password">Palavra-passe</label>
+                            <input type="password" id="password" placeholder="••••••" required>
                         </div>
 
-                        <div class="form-footer">
-                            <a href="#" class="forgot-pass">Esqueceste-te da palavra-passe?</a>
-                        </div>
-
-                        <div class="modal-actions">
-                            <button type="submit" class="btn-casino btn-orange">ENTRAR</button>
-                            <span class="divider">ou</span>
-                            <button type="button" class="btn-casino btn-outline">CRIAR CONTA</button>
+                        <div class="form-actions">
+                            <button type="button" class="btn-cancel" onclick="toggleLogin()">Cancelar</button>
+                            <button type="submit" class="btn-confirm">Enviar</button>
                         </div>
                     </form>
                 </div>
@@ -284,24 +268,21 @@
 
     <script>
     function toggleLogin() {
-        // AQUI ESTAVA O ERRO: O teu ID é 'loginOverlay', não 'overlay'
-        const overlay = document.getElementById('loginOverlay');
-        
-        if (overlay.classList.contains('active')) {
-            overlay.classList.remove('active');
-            overlay.setAttribute('aria-hidden', 'true');
-        } else {
-            overlay.classList.add('active');
-            overlay.setAttribute('aria-hidden', 'false');
-        }
+    const overlay = document.getElementById('loginOverlay');
+    
+    if (overlay.classList.contains('active')) {
+        overlay.classList.remove('active');
+    } else {
+        overlay.classList.add('active');
     }
+}
 
-    // Fechar ao clicar fora
-    document.getElementById('loginOverlay').addEventListener('click', function(e) {
-        if (e.target === this) {
-            toggleLogin();
-        }
-    });
+// Fechar ao clicar fora da caixa branca/azul
+document.getElementById('loginOverlay').addEventListener('click', function(e) {
+    if (e.target === this) {
+        toggleLogin();
+    }
+});
 </script>
 
 </body>
