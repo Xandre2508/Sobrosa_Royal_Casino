@@ -7,8 +7,8 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="Estilos.css">
+    <script src="DataBase.js" defer></script>
 </head>
 <body>
 
@@ -257,7 +257,7 @@
         </div>
     </div>
 
-    <!-- JANELA DE REGISTO (NOVA) -->
+    <!-- JANELA DE REGISTO -->
     <div class="overlay" id="registerOverlay">
         <div class="login-card">
             <h2>Criar Conta</h2>
@@ -283,64 +283,7 @@
     </div>
 
     <!-- CÓDIGO FIREBASE + LÓGICA -->
-    <script type="module">
-        // --- 1. Importar Ferramentas do Firebase (Versão Estável 10.8.0) ---
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        // --- 2. A Tua Configuração (Dados que enviaste) ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyBZXk1befV9zRKifrADxknJtrKedFWnEnI",
-            authDomain: "casinoroyalesobrosa.firebaseapp.com",
-            projectId: "casinoroyalesobrosa",
-            storageBucket: "casinoroyalesobrosa.firebasestorage.app",
-            messagingSenderId: "1078874375334",
-            appId: "1:1078874375334:web:ac4a2c445655c65245a067",
-            measurementId: "G-8SYMPVFSF9"
-        };
-
-        // Iniciar o Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // --- 3. Lógica de REGISTO (Criar Conta) ---
-        const registerForm = document.getElementById('registerForm');
-        if(registerForm) {
-            registerForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                
-                const nome = document.getElementById('reg-name').value;
-                const email = document.getElementById('reg-email').value;
-                const pass = document.getElementById('reg-password').value;
-
-                try {
-                    // Criar utilizador
-                    const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
-                    const user = userCredential.user;
-
-                    // Guardar dados na Base de Dados (Saldo inicial 1000)
-                    await setDoc(doc(db, "users", user.uid), {
-                        nome: nome,
-                        email: email,
-                        saldo: 1000.00,
-                        criadoEm: new Date().toISOString()
-                    });
-
-                    alert("Conta criada com sucesso! Bem-vindo, " + nome);
-                    toggleRegister(); // Fecha janela
-                    
-                } catch (error) {
-                    console.error(error);
-                    let msg = error.message;
-                    if(msg.includes("email-already-in-use")) msg = "Este email já está registado.";
-                    if(msg.includes("weak-password")) msg = "A password é muito fraca (mínimo 6 caracteres).";
-                    alert("Erro: " + msg);
-                }
-            });
-        }
-
+    <script>
         // --- 4. Lógica de LOGIN (Entrar) ---
         const loginForm = document.getElementById('loginForm'); 
         if(loginForm) {
