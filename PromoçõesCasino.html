@@ -31,7 +31,7 @@
             </div>
 
             <div class="nav-actions">
-                <button class="btn btn-outline" id="openLogin">ENTRAR</button>
+                <button class="btn btn-outline" onclick="toggleLogin()">ENTRAR</button>
                 <button class="btn btn-gradient" id="openRegister">REGISTO</button>
             </div>
         </div>
@@ -196,48 +196,47 @@
         </div>
     </footer>
 
-    <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-hidden="true">
-        <div class="modal" role="document" id="modalContent">
-            <h2 id="modalTitle">login</h2>
-            <form id="authForm" autocomplete="off">
-                <div class="field">
-                    <label for="email">Email</label>
-                    <input id="email" type="email" required placeholder="utilizador@exemplo.com" />
-                </div>
-                <div class="field">
-                    <label for="password">Palavra-passe</label>
-                    <input id="password" type="password" required minlength="6" placeholder="••••••" />
-                </div>
-                <div class="actions">
-                    <button type="button" class="btn" id="closeModal">Cancelar</button>
-                    <button type="submit" class="btn">Enviar</button>
-                </div>
-            </form>
-        </div>
+    <div class="overlay" id="loginOverlay">
+    <div class="login-card">
+        <h2>Entrar</h2>
+        
+        <form class="login-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="utilizador@exemplo.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Palavra-passe</label>
+                <input type="password" id="password" placeholder="••••••" required>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" onclick="toggleLogin()">Cancelar</button>
+                <button type="submit" class="btn-confirm">Enviar</button>
+            </div>
+        </form>
     </div>
+</div>
 
     <script>
-        // Reutilização do script de modal
-        const overlay = document.getElementById('overlay');
-        const modalTitle = document.getElementById('modalTitle');
-        const openLogin = document.getElementById('openLogin');
-        const openRegister = document.getElementById('openRegister');
-        const closeModal = document.getElementById('closeModal');
+    function toggleLogin() {
+        const overlay = document.getElementById('loginOverlay');
         
-        function openModal(mode='login'){
-            modalTitle.textContent = mode === 'login' ? 'Entrar' : 'Registar';
-            overlay.classList.add('open');
-            overlay.setAttribute('aria-hidden','false');
+        if (overlay.classList.contains('active')) {
+            overlay.classList.remove('active');
+        } else {
+            overlay.classList.add('active');
         }
-        function close(){
-            overlay.classList.remove('open');
-            overlay.setAttribute('aria-hidden','true');
+    }
+
+    // Fechar ao clicar fora da caixa
+    document.getElementById('loginOverlay').addEventListener('click', function(e) {
+        if (e.target === this) {
+            toggleLogin();
         }
-        if(openLogin) openLogin.addEventListener('click', ()=>openModal('login'));
-        if(openRegister) openRegister.addEventListener('click', ()=>openModal('register'));
-        if(closeModal) closeModal.addEventListener('click', close);
-        overlay.addEventListener('click', (e)=>{ if(e.target === overlay) close(); });
-    </script>
+    });
+</script>
 
 </body>
 </html>

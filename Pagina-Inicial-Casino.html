@@ -30,11 +30,12 @@
                 <a href="#">VIP</a>
                 <a href="Sobre.html">Sobre</a>
             </div>
-
+            
             <div class="nav-actions">
-                <button class="btn btn-outline">ENTRAR</button>
+                <button class="btn btn-outline" onclick="toggleLogin()">ENTRAR</button>
                 <button class="btn btn-gradient">REGISTO</button>
             </div>
+
         </div>
     </nav>
 
@@ -240,131 +241,49 @@
         </div>
     </footer>
 
- // Modal de Autenticação
-    <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-hidden="true">
-        <div class="modal" role="document" id="modalContent">
-            <h2 id="modalTitle">login</h2>
-            <form id="authForm" autocomplete="off">
-                <div class="field">
-                    <label for="email">Email</label>
-                    <input id="email" type="email" required placeholder="utilizador@exemplo.com" />
+                <div class="overlay" id="loginOverlay">
+                <div class="login-card">
+                    <h2>Entrar</h2>
+                    
+                    <form class="login-form">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="utilizador@exemplo.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Palavra-passe</label>
+                            <input type="password" id="password" placeholder="••••••" required>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn-cancel" onclick="toggleLogin()">Cancelar</button>
+                            <button type="submit" class="btn-confirm">Enviar</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="field">
-                    <label for="password">Palavra-passe</label>
-                    <input id="password" type="password" required minlength="6" placeholder="••••••" />
-                </div>
-                <div class="actions">
-                    <button type="button" class="btn" id="closeModal">Cancelar</button>
-                    <button type="submit" class="btn">Enviar</button>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
-
-
-    // Script Principal dos Jogos 
-    <script src="JogosCasino.js"></script>
+    </nav>
 
     <script>
-        // Verifica se os jogos carregaram corretamente
-        if (typeof window.listaDeJogos === 'undefined') {
-            alert("Erro: Não consegui encontrar o ficheiro JogosCasino.js! Verifica se o nome está correto.");
-        }
-
-        const games = window.listaDeJogos || []; // Vai buscar a lista ao outro ficheiro
-        const grid = document.getElementById('gamesGrid');
-
-        // Função para desenhar os jogos
-        function renderGames(list){
-            grid.innerHTML = '';
-            // Se a lista estiver vazia, não faz nada
-            if(!list || list.length === 0) return;
-
-            list.forEach(g => {
-                const card = document.createElement('article');
-                card.className = 'card';
-
-            // Verifica se existe 'img' no objeto do jogo
-        // Se existir, cria a tag <img>. Se não, cria a <div class="thumb"> antiga.
-        const imagemOuThumb = g.img 
-            ? `<img src="${g.img}" alt="${g.title}" class="img-jogo">` 
-            : `<div class="thumb" style="background:linear-gradient(120deg, ${g.color}, rgba(0,0,0,0.15));">${g.type}</div>`;
-
-            card.innerHTML = `
-                ${imagemOuThumb}
-                <h3>${g.title}</h3>
-                <p>${g.desc}</p>
-                <div class="meta">
-                    <span class="pill">${g.type}</span>
-                    <button class="btn" data-id="${g.id}" aria-label="Jogar ${g.title}" style="padding:8px 10px">Jogar</button>
-                </div>
-            `;
-            grid.appendChild(card);
-        });
+    function toggleLogin() {
+    const overlay = document.getElementById('loginOverlay');
+    
+    if (overlay.classList.contains('active')) {
+        overlay.classList.remove('active');
+    } else {
+        overlay.classList.add('active');
+    }
 }
 
-        // Inicializa
-        renderGames(games);
-
-        // Lógica do clique "Jogar"
-        grid.addEventListener('click', (e) => {
-            const btn = e.target.closest('button[data-id]');
-            if(!btn) return;
-            
-            const id = Number(btn.dataset.id);
-            const game = games.find(g => g.id === id);
-            
-            if (game && game.url) {
-                window.location.href = game.url;
-            } else {
-                alert(`Demo: ${game.title} — Link ainda não configurado.`);
-            }
-        });
-
-        // Pesquisa
-        document.getElementById('q').addEventListener('input', (e)=>{
-            const q = e.target.value.toLowerCase().trim();
-            renderGames(games.filter(g => g.title.toLowerCase().includes(q) || g.type.toLowerCase().includes(q)));
-        });
-
-        // --- MANTÉM O RESTO DO TEU CÓDIGO (MODAL, ETC) IGUAL ---
-        const overlay = document.getElementById('overlay');
-        const modalTitle = document.getElementById('modalTitle');
-        const openLogin = document.getElementById('openLogin');
-        const openRegister = document.getElementById('openRegister');
-        const closeModal = document.getElementById('closeModal');
-        const authForm = document.getElementById('authForm');
-
-        function openModal(mode='login'){
-            modalTitle.textContent = mode === 'login' ? 'Entrar' : 'Registar';
-            overlay.classList.add('open');
-            overlay.setAttribute('aria-hidden','false');
-            document.getElementById('email').focus();
-        }
-        function close(){
-            overlay.classList.remove('open');
-            overlay.setAttribute('aria-hidden','true');
-            authForm.reset();
-        }
-        openLogin.addEventListener('click', ()=>openModal('login'));
-        openRegister.addEventListener('click', ()=>openModal('register'));
-        closeModal.addEventListener('click', close);
-        overlay.addEventListener('click', (e)=>{ if(e.target === overlay) close(); });
-        document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); });
-
-        authForm.addEventListener('submit', (e)=>{
-            e.preventDefault();
-            const email = document.getElementById('email').value.trim();
-            alert(`Simulação: ${email}`);
-            close();
-        });
-
-        document.getElementById('explore').addEventListener('click', ()=>{ location.href = '#jogos'; });
-        document.getElementById('year').textContent = new Date().getFullYear();
-        const onlineCountEl = document.getElementById('onlineCount');
-        let online = 1254;
-        setInterval(()=>{ online += Math.floor(Math.random()*6-2); if(online<200) online=200; onlineCountEl.textContent = online.toLocaleString(); }, 3000);
-    </script>
+// Fechar ao clicar fora da caixa branca/azul
+document.getElementById('loginOverlay').addEventListener('click', function(e) {
+    if (e.target === this) {
+        toggleLogin();
+    }
+});
+</script>
 
 </body>
 </html>
