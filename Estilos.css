@@ -61,7 +61,6 @@ ul { list-style: none; }
     cursor: pointer;
     transition: all 0.3s ease;
     border: none;
-
 }
 
 .btn-primary {
@@ -87,8 +86,6 @@ ul { list-style: none; }
 }
 
 .btn-gradient:hover { border-color: #ea580c; color: #ea580c; background: transparent;}
-
-
 
 .search-box { position: relative; width: 100%; max-width: 350px; }
 .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-gray); }
@@ -360,99 +357,97 @@ ul { list-style: none; }
 .tag { background: rgba(255,255,255,0.1); font-size: 0.7rem; padding: 4px 8px; border-radius: 4px; color: #ccc; }
 .link-play { color: var(--primary); font-weight: 700; font-size: 0.9rem; }
 
-    /* Cria uma grelha dividida: Texto à esquerda, Cartões à direita */
+/* Cria uma grelha dividida: Texto à esquerda, Cartões à direita */
 .hero-grid-owners {
-        display: grid;
-        position: relative;       
-        gap: 0px;
-    }
+    display: grid;
+    position: relative;       
+    gap: 0px;
+}
 
-    /* Área dos Cartões (Lado Direito) */
+/* Área dos Cartões (Lado Direito) */
 .owners-display {
-        display: flex;
-        gap: 20px; /* Espaço entre os dois retângulos */
-        justify-content: center;
-    }
+    display: flex;
+    gap: 20px; /* Espaço entre os dois retângulos */
+    justify-content: center;
+}
 
-    /* O Design do Retângulo Vertical */
+/* O Design do Retângulo Vertical */
 .owner-card-vertical {
-        width: 200px;       /* Largura do retângulo */
-        height: 350px;      /* Altura do retângulo (bem alto como no desenho) */
-        background: rgba(0, 0, 0, 0.6); /* Fundo escuro transparente */
-        backdrop-filter: blur(10px);    /* Efeito vidro */
-        border: 2px solid rgba(212, 175, 55, 0.3); /* Borda dourada suave */
-        border-radius: 15px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-end; /* Texto no fundo do cartão */
-        padding: 20px;
-        transition: transform 0.3s ease, border-color 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
+    width: 200px;       /* Largura do retângulo */
+    height: 350px;      /* Altura do retângulo (bem alto como no desenho) */
+    background: rgba(0, 0, 0, 0.6); /* Fundo escuro transparente */
+    backdrop-filter: blur(10px);    /* Efeito vidro */
+    border: 2px solid rgba(212, 175, 55, 0.3); /* Borda dourada suave */
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end; /* Texto no fundo do cartão */
+    padding: 20px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
 
-    /* Efeito ao passar o rato */
+/* Efeito ao passar o rato */
 .owner-card-vertical:hover {
-        transform: translateY(-10px); /* Sobe um pouco */
-        border-color: #d4af37; /* Borda fica dourado vivo */
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
+    transform: translateY(-10px); /* Sobe um pouco */
+    border-color: #d4af37; /* Borda fica dourado vivo */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
 
-    /* Placeholder para a Imagem/Ícone no centro */
+/* Placeholder para a Imagem/Ícone no centro */
 .owner-image-placeholder {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 0;
-    }
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 0;
+}
 
 .owner-image-placeholder i {
-        font-size: 5rem;
-        color: rgba(255,255,255,0.1); /* Ícone grande e subtil */
-    }
+    font-size: 5rem;
+    color: rgba(255,255,255,0.1); /* Ícone grande e subtil */
+}
 
-    /* Texto na parte de baixo do retângulo */
+/* Texto na parte de baixo do retângulo */
 .owner-details {
-        z-index: 1;
-        margin-bottom: -20px;
-        text-align: center;
-        background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-        width: 100%;
-        padding-top: 20px;
-    }
+    z-index: 1;
+    margin-bottom: -20px;
+    text-align: center;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    width: 100%;
+    padding-top: 20px;
+}
 
 .owner-details h3 {
-        color: #d4af37; /* Dourado */
-        font-size: 1.2rem;
-        margin-bottom: -20px;
-        font-weight: 700;
-        text-transform: uppercase;
-    }
+    color: #d4af37; /* Dourado */
+    font-size: 1.2rem;
+    margin-bottom: -20px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
 
 .owner-details p {
-        color: #fff;
-        font-size: 0.9rem;
-        margin: 0;
+    color: #fff;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Responsividade: No telemóvel, ficam um por baixo do outro */
+@media (max-width: 768px) {
+    .hero-grid-owners {
+        grid-template-columns: 1fr; /* Uma coluna */
+        text-align: center;
     }
-
-    /* Responsividade: No telemóvel, ficam um por baixo do outro */
-    @media (max-width: 768px) {
-        .hero-grid-owners {
-            grid-template-columns: 1fr; /* Uma coluna */
-            text-align: center;
-        }
-        .owners-display {
-            margin-top: 30px;
-        }
+    .owners-display {
+        margin-top: 30px;
     }
-
-
+}
 
 /* Mobile */
 @media (max-width: 991px) {
@@ -553,7 +548,7 @@ ul { list-style: none; }
     font-size: 0.75rem;
 }
 
-/* Responsividade para Telemóvel */
+/* Responsividade para Telemóvel (RODAPÉ) */
 @media (max-width: 768px) {
     .footer-grid {
         grid-template-columns: 1fr;
@@ -568,4 +563,109 @@ ul { list-style: none; }
     .payment-icons {
         justify-content: center;
     }
+} /* <--- AQUI ESTAVA O ERRO! ESTA CHAVETA ESTAVA EM FALTA */
+
+/* =========================================
+   NOVOS CARTÕES VERTICAIS VIP
+   ========================================= */
+
+/* 1. A Grelha que mete os cartões lado a lado */
+.vip-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+/* 2. O Design do Cartão (O fundo de vidro) */
+.vip-vertical-card {
+    height: 450px; /* Altura fixa para ficarem iguais */
+    background: rgba(0, 0, 0, 0.6); /* Fundo preto transparente */
+    backdrop-filter: blur(10px);    /* Efeito vidro */
+    -webkit-backdrop-filter: blur(10px); /* Para funcionar no Safari/Chrome */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 30px 20px;
+    
+    display: flex; /* Alinha o conteúdo verticalmente */
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efeito ao passar o rato */
+.vip-vertical-card:hover {
+    transform: translateY(-10px); /* Sobe um pouco */
+    box-shadow: 0 15px 30px rgba(0,0,0,0.5); /* Sombra forte */
+}
+
+/* 3. Estilos Específicos por Nível (Cores) */
+
+/* Bronze */
+.level-bronze { border-bottom: 4px solid #cd7f32; }
+.level-bronze .vip-card-icon { color: #cd7f32; }
+.level-bronze:hover { border-color: #cd7f32; box-shadow: 0 15px 30px rgba(205, 127, 50, 0.2); }
+
+/* Prata */
+.level-silver { border-bottom: 4px solid #c0c0c0; }
+.level-silver .vip-card-icon { color: #e0e0e0; }
+.level-silver:hover { border-color: #c0c0c0; box-shadow: 0 15px 30px rgba(192, 192, 192, 0.2); }
+
+/* Ouro */
+.level-gold { border-bottom: 4px solid #ffd700; }
+.level-gold .vip-card-icon { color: #ffd700; }
+.level-gold:hover { border-color: #ffd700; box-shadow: 0 15px 30px rgba(255, 215, 0, 0.2); }
+
+/* Diamante */
+.level-diamond { border-bottom: 4px solid #00d2ff; }
+.level-diamond .vip-card-icon { color: #00d2ff; }
+.level-diamond:hover { border-color: #00d2ff; box-shadow: 0 15px 30px rgba(0, 210, 255, 0.2); }
+
+/* 4. Conteúdo dentro do cartão */
+
+/* Ícone grande */
+.vip-card-icon {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    transition: 0.3s;
+}
+
+/* Título (Bronze, Prata...) */
+.vip-card-content h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+/* Texto de requisito (Entrada: X) */
+.requirement {
+    font-size: 0.85rem;
+    color: var(--text-gray); /* Certifica-te que tens esta variável ou usa #9ca3af */
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    width: 100%;
+}
+
+/* Lista de Benefícios */
+.benefits-list {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.benefits-list li {
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    color: #e2e8f0;
+    display: block;
 }

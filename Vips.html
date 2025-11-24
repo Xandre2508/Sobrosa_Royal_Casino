@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promoções - Sobrosa Royal Casino</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Estilos.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="index.html" class="logo, logo-text"> </a>
+            <div class="logo">
+                <img src="./Imagens-Casino/SobrosaRoyalCasino.png" class="logo-img" alt="Sobrosa Logo" style="width: 200px; height: 200px;" >
+                <div class="logo-text">
+                    <h1>SOBROSA ROYAL</h1>
+                    <span>Casino • VIP</span>
+                </div>
+            </div>
+
+            <div class="nav-links">
+                <a href="index.html">Inicio</a>
+                <a href="jogo.html">Jogos</a>
+                <a href="PromoçõesCasino.html">Promoções</a>
+                <a href="Vips.html" class="active">VIP</a>
+                <a href="Sobre.html">Sobre</a>
+            </div>
+
+            <div class="nav-actions">
+                <button class="btn btn-outline" id="openLogin">ENTRAR</button>
+                <button class="btn btn-gradient" id="openRegister">REGISTO</button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero" style="min-height: 500px;">
+        <div class="hero-bg">
+            <img src="./Imagens-Casino/casinobackground.png" alt="Fundo VIP">
+            <div class="hero-overlay"></div>
+            <div class="hero-gradient"></div>
+        </div>
+
+        <div class="container hero-grid" style="align-items: center;">
+            <div class="hero-content">
+                <span class="hero-tag"><i class="fa-solid fa-crown"></i> Clube Exclusivo</span>
+                <h1 class="hero-title">
+                    Tratamento de <br>
+                    <span class="text-gradient">Realeza</span>
+                </h1>
+                <p class="hero-desc">
+                    No Sobrosa Royal, a tua lealdade é recompensada com prémios luxuosos, gestores de conta pessoais e levantamentos imediatos.
+                </p>
+                <button class="btn btn-gradient">Ver o meu Nível</button>
+            </div>
+            
+            <div style="display: flex; justify-content: center;">
+                <i class="fa-solid fa-gem" style="font-size: 15rem; background: var(--gradient-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.3));"></i>
+            </div>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-header" style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px; margin-bottom: 50px;">
+                <h2 style="font-size: 2rem; font-weight: 700; margin: 0;">Níveis de Prestígio</h2>
+                <p style="color: var(--text-gray); margin: 0;">Sobe na hierarquia e desbloqueia benefícios exclusivos.</p>
+            </div>
+
+            <div class="vip-cards-grid">
+                
+                <div class="vip-vertical-card level-bronze">
+                    <div class="vip-card-icon">
+                        <i class="fa-solid fa-medal"></i>
+                    </div>
+                    <div class="vip-card-content">
+                        <h3>Bronze</h3>
+                        <p class="requirement">Entrada: Registo</p>
+                        <ul class="benefits-list">
+                            <li>Suporte Email 24/7</li>
+                            <li>Acesso a Torneios</li>
+                            <li>Bónus de Aniversário</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="vip-vertical-card level-silver">
+                    <div class="vip-card-icon">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div class="vip-card-content">
+                        <h3>Prata</h3>
+                        <p class="requirement">Entrada: €5,000</p>
+                        <ul class="benefits-list">
+                            <li><strong>3% Cashback</strong></li>
+                            <li>Levantamentos Rápidos</li>
+                            <li>Chat Prioritário</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="vip-vertical-card level-gold">
+                    <div class="vip-card-icon">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <div class="vip-card-content">
+                        <h3>Ouro</h3>
+                        <p class="requirement">Entrada: €25,000</p>
+                        <ul class="benefits-list">
+                            <li><strong>7% Cashback</strong></li>
+                            <li>Gestor Dedicado</li>
+                            <li>Limites Elevados</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="vip-vertical-card level-diamond">
+                    <div class="vip-card-icon">
+                        <i class="fa-solid fa-gem"></i>
+                    </div>
+                    <div class="vip-card-content">
+                        <h3>Diamante</h3>
+                        <p class="requirement">Apenas Convite</p>
+                        <ul class="benefits-list">
+                            <li><strong>15% Cashback Real</strong></li>
+                            <li>Gestor Pessoal (WhatsApp)</li>
+                            <li>Levantamentos Instantâneos</li>
+                            <li>Viagens e Eventos VIP</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="background: rgba(255,255,255,0.02);">
+        <div class="container">
+            <div style="text-align: center; max-width: 600px; margin: 0 auto 50px;">
+                <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 10px;">Vantagens Exclusivas</h2>
+                <p style="color: var(--text-gray);">Porquê jogar no Sobrosa Royal?</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="icon-box"><i class="fa-solid fa-user-tie"></i></div>
+                    <h3>Gestor Pessoal</h3>
+                    <p>Um assistente dedicado disponível via WhatsApp para resolver qualquer questão.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon-box"><i class="fa-solid fa-plane-departure"></i></div>
+                    <h3>Viagens e Eventos</h3>
+                    <p>Convites para festas exclusivas, finais da Champions e viagens ao Mónaco.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon-box"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                    <h3>Pagamentos Flash</h3>
+                    <p>Os teus ganhos na tua conta bancária em menos de 15 minutos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4 class="footer-title brand-title">SOBROSA ROYAL</h4>
+                    <p class="footer-desc">Casino Clube é uma demo para fins educativos.</p>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-title">Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="Pagina-Inicial-Casino.html">Inicio</a></li>
+                        <li><a href="PromoçõesCasino.html">Promoções</a></li>
+                        <li><a href="VIP.html">VIP</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Casino Clube — Demo.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="overlay" id="overlay">
+        <div class="modal" id="modalContent">
+            <h2 id="modalTitle">login</h2>
+            <form id="authForm"><div class="field"><label>Email</label><input type="email"></div><div class="field"><label>Senha</label><input type="password"></div><div class="actions"><button type="button" class="btn" id="closeModal">Cancelar</button><button type="submit" class="btn">Entrar</button></div></form>
+        </div>
+    </div>
+    <script>
+        const overlay = document.getElementById('overlay');
+        const openLogin = document.getElementById('openLogin');
+        const closeModal = document.getElementById('closeModal');
+        if(openLogin) openLogin.addEventListener('click', ()=> overlay.classList.add('open'));
+        if(closeModal) closeModal.addEventListener('click', ()=> overlay.classList.remove('open'));
+        overlay.addEventListener('click', (e)=> { if(e.target===overlay) overlay.classList.remove('open'); });
+    </script>
+
+</body>
+</html>
