@@ -33,7 +33,7 @@
 
             <div class="nav-actions">
                 <button class="btn btn-outline" onclick="toggleLogin()">ENTRAR</button>
-                <button class="btn btn-gradient" id="openRegister">REGISTO</button>
+                <button class="btn btn-gradient" onclick="toggleRegister()">REGISTO</button>
             </div>
         </div>
     </nav>
@@ -232,11 +232,45 @@
             </form>
         </div>
     </div>
+    
+    <div class="overlay" id="registerOverlay">
+    <div class="login-card">
+        <h2>Criar Conta</h2>
+        
+        <form class="login-form">
+            <div class="form-group">
+                <label for="reg-name">Nome Completo</label>
+                <input type="text" id="reg-name" placeholder="O teu nome" required>
+            </div>
 
+            <div class="form-group">
+                <label for="reg-email">Email</label>
+                <input type="email" id="reg-email" placeholder="utilizador@exemplo.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="reg-password">Palavra-passe</label>
+                <input type="password" id="reg-password" placeholder="Cria uma palavra-passe" required>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" onclick="toggleRegister()">Cancelar</button>
+                <button type="submit" class="btn-confirm">Registar</button>
+            </div>
+        </form>
+    </div>
+</div>
    <script>
+    // --- FUNÇÃO LOGIN ---
     function toggleLogin() {
         const overlay = document.getElementById('loginOverlay');
-        
+        const regOverlay = document.getElementById('registerOverlay');
+
+        // Se o registo estiver aberto, fecha-o primeiro
+        if (regOverlay.classList.contains('active')) {
+            regOverlay.classList.remove('active');
+        }
+
         if (overlay.classList.contains('active')) {
             overlay.classList.remove('active');
         } else {
@@ -244,10 +278,36 @@
         }
     }
 
-    // Fechar ao clicar fora da caixa
+    // --- FUNÇÃO REGISTO ---
+    function toggleRegister() {
+        const overlay = document.getElementById('registerOverlay');
+        const loginOverlay = document.getElementById('loginOverlay');
+
+        // Se o login estiver aberto, fecha-o primeiro
+        if (loginOverlay.classList.contains('active')) {
+            loginOverlay.classList.remove('active');
+        }
+
+        if (overlay.classList.contains('active')) {
+            overlay.classList.remove('active');
+        } else {
+            overlay.classList.add('active');
+        }
+    }
+
+    // --- FECHAR AO CLICAR FORA ---
+    
+    // Para o Login
     document.getElementById('loginOverlay').addEventListener('click', function(e) {
         if (e.target === this) {
             toggleLogin();
+        }
+    });
+
+    // Para o Registo
+    document.getElementById('registerOverlay').addEventListener('click', function(e) {
+        if (e.target === this) {
+            toggleRegister();
         }
     });
 </script>
