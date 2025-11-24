@@ -1,0 +1,175 @@
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // --- 2. A Tua Configuração ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyBZXk1befV9zRKifrADxknJtrKedFWnEnI",
+        authDomain: "casinoroyalesobrosa.firebaseapp.com",
+        projectId: "casinoroyalesobrosa",
+        storageBucket: "casinoroyalesobrosa.firebasestorage.app",
+        messagingSenderId: "1078874375334",
+        appId: "1:1078874375334:web:ac4a2c445655c65245a067",
+        measurementId: "G-8SYMPVFSF9"
+    };
+
+    // Iniciar o Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // --- 3. Lógica de REGISTO (Criar Conta) ---
+    const registerForm = document.getElementById('registerForm');
+    if(registerForm) {
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const nome = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const pass = document.getElementById('reg-password').value;
+
+            try {
+                // Criar utilizador na Autenticação
+                const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+                const user = userCredential.user;
+
+                // Guardar dados extra na Base de Dados (Saldo inicial 1000)
+                await setDoc(doc(db, "users", user.uid), {
+                    nome: nome,
+                    email: email,
+                    saldo: 1000.00,
+                    criadoEm: new Date().toISOString()
+                });
+
+                alert("Conta criada com sucesso! Bem-vindo, " + nome);
+                toggleRegister(); // Fecha a janela
+                
+            } catch (error) {
+                console.error(error);
+                let msg = error.message;
+                if(msg.includes("email-already-in-use")) msg = "Este email já está registado.";
+                if(msg.includes("weak-password")) msg = "A password é muito fraca (mínimo 6 caracteres).";
+                alert("Erro: " + msg);
+            }
+        });
+    }
+
+    // --- 4. Lógica de LOGIN (Entrar) ---
+    const loginForm = document.getElementById('loginForm'); // Assegura-te que o form tem este ID
+    if(loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+                alert("Entraste com sucesso!");
+                toggleLogin(); // Fecha a janela
+            } catch (error) {
+                console.error(error);
+                alert("Email ou password incorretos!");
+            }
+        });
+    }
+
+    // --- 5. Verificar Estado (Se está logado ou não) ---
+    onAuthStateChanged(auth, async (user) => {
+        // Tenta encontrar os botões pela classe (funciona em todos os ficheiros)
+        const btnLogin = document.querySelector('.nav-actions .btn-outline'); 
+        const btnRegisto = document.querySelector('.nav-actions .btn-gradient'); 
+
+        if (user) {
+            // --- UTILIZADOR LOGADO ---
+            let nomeDisplay = "Jogador";
+            
+            // Vai buscar o nome à base de dados
+            try {
+                const docSnap = await getDoc(doc(db, "users", user.uid));
+                if (docSnap.exists()) {
+                    nomeDisplay = docSnap.data().nome;
+                }
+            } catch(e) { console.log("Erro ao ler nome:", e); }
+
+            // Atualiza Botão de Login para mostrar o Nome
+            if(btnLogin) {
+                btnLogin.innerHTML = `<i class="fa-solid fa-user"></i> ${nomeDisplay}`;
+                btnLogin.onclick = null; // Remove o popup de login
+            }
+            
+            // Transforma Botão de Registo em Botão de SAIR
+            if(btnRegisto) {
+                btnRegisto.textContent = "SAIR";
+                btnRegisto.classList.remove('btn-gradient');
+                btnRegisto.classList.add('btn-outline');
+                // Estilo vermelho para indicar saída
+                btnRegisto.style.borderColor = "#ef4444"; 
+                btnRegisto.style.color = "#ef4444";
+                
+                // Ação de Logout
+                btnRegisto.onclick = async () => {
+                    await signOut(auth);
+                    window.location.reload(); // Recarrega a página para limpar dados
+                };
+            }
+
+        } else {
+            // --- UTILIZADOR NÃO LOGADO ---
+            
+            if(btnLogin) {
+                btnLogin.textContent = "ENTRAR";
+                btnLogin.innerHTML = "ENTRAR"; // Garante que limpa o ícone
+                btnLogin.onclick = toggleLogin; // Volta a abrir o popup
+            }
+
+            if(btnRegisto) {
+                btnRegisto.textContent = "REGISTO";
+                btnRegisto.classList.add('btn-gradient');
+                btnRegisto.classList.remove('btn-outline');
+                btnRegisto.style.borderColor = "";
+                btnRegisto.style.color = "";
+                btnRegisto.onclick = toggleRegister; // Volta a abrir o registo
+            }
+        }
+    });
+
+    // --- 6. Funções das Janelas (Popups) ---
+    // Atribuídas a 'window' para funcionarem com o onclick="..." do HTML
+    window.toggleLogin = function() {
+        const overlay = document.getElementById('loginOverlay');
+        const regOverlay = document.getElementById('registerOverlay');
+        
+        // Se o registo estiver aberto, fecha-o
+        if(regOverlay && regOverlay.classList.contains('active')) {
+            regOverlay.classList.remove('active');
+        }
+        
+        if(overlay) overlay.classList.toggle('active');
+    }
+
+    window.toggleRegister = function() {
+        const overlay = document.getElementById('registerOverlay');
+        const logOverlay = document.getElementById('loginOverlay');
+        
+        // Se o login estiver aberto, fecha-o
+        if(logOverlay && logOverlay.classList.contains('active')) {
+            logOverlay.classList.remove('active');
+        }
+        
+        if(overlay) overlay.classList.toggle('active');
+    }
+
+    // Fechar ao clicar fora (Corrigido para usar addEventListener)
+    window.addEventListener('click', function(event) {
+        const lOverlay = document.getElementById('loginOverlay');
+        const rOverlay = document.getElementById('registerOverlay');
+        
+        if (lOverlay && event.target == lOverlay) {
+            lOverlay.classList.remove('active');
+        }
+        if (rOverlay && event.target == rOverlay) {
+            rOverlay.classList.remove('active');
+        }
+    });
