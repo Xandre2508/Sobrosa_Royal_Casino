@@ -78,168 +78,214 @@
 
     </div>
 
-    <script>
-        // --- Variáveis do Jogo ---
-        let balance = 1000.00;
-        let currentBet = 0;
-        let multiplier = 1.00;
-        let gameInterval;
-        let isRunning = false;
-        let hasBet = false; // Se o jogador apostou nesta ronda
-        let hasCashedOut = false; // Se o jogador já retirou
-        let crashPoint = 0;
+    <script type="module">
+    // --- 1. Importar Firebase ---
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // --- Elementos do DOM ---
-        const elBalance = document.getElementById('userBalance');
-        const elMultiplier = document.getElementById('multiplier');
-        const elRocket = document.getElementById('rocket');
-        const elBtn = document.getElementById('actionBtn');
-        const elBetInput = document.getElementById('betAmount');
-        const elStatus = document.getElementById('statusMessage');
-        const elHistory = document.getElementById('historyBar');
-        const elWinnings = document.getElementById('winningsDisplay');
+    // --- 2. CONFIGURAÇÃO (COLA AQUI AS TUAS CHAVES) ---
+    const firebaseConfig = {
+        apiKey: "",
+        authDomain: "",
+        projectId: "",
+        storageBucket: "",
+        messagingSenderId: "",
+        appId: ""
+    };
 
-        // --- Funções Auxiliares ---
-        function updateBalance(val) {
-            balance = val;
-            elBalance.textContent = balance.toFixed(2);
-        }
+    // Iniciar Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        function adjustBet(factor) {
-            let val = parseFloat(elBetInput.value);
-            if(isNaN(val)) val = 10;
-            elBetInput.value = (val * factor).toFixed(2);
-        }
+    // --- 3. Variáveis do Jogo ---
+    let currentUser = null; // Vai guardar quem é o jogador
+    let balance = 0;        // Começa a zero até carregar da base de dados
+    let currentBet = 0;
+    let multiplier = 1.00;
+    let gameInterval;
+    let isRunning = false;
+    let hasBet = false;
+    let hasCashedOut = false;
+    let crashPoint = 0;
 
-        function addToHistory(val) {
-            const pill = document.createElement('span');
-            pill.textContent = val.toFixed(2) + 'x';
-            pill.className = 'history-pill';
+    // --- Elementos do DOM ---
+    const elBalance = document.getElementById('userBalance');
+    const elMultiplier = document.getElementById('multiplier');
+    const elRocket = document.getElementById('rocket');
+    const elBtn = document.getElementById('actionBtn');
+    const elBetInput = document.getElementById('betAmount');
+    const elStatus = document.getElementById('statusMessage');
+    const elHistory = document.getElementById('historyBar');
+    const elWinnings = document.getElementById('winningsDisplay');
+
+    // --- 4. VERIFICAR LOGIN E CARREGAR SALDO ---
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            currentUser = user;
+            // Carregar saldo da base de dados
+            const docRef = doc(db, "users", user.uid);
+            const docSnap = await getDoc(docRef);
             
-            if(val < 2) pill.classList.add('pill-red');
-            else if(val >= 10) pill.classList.add('pill-gold');
-            else pill.classList.add('pill-green');
+            if (docSnap.exists()) {
+                const dados = docSnap.data();
+                balance = dados.saldo; // Atualiza a variável local com o saldo real
+                elBalance.textContent = balance.toFixed(2);
+                elStatus.textContent = `Bem-vindo, ${dados.nome}!`;
+            }
+        } else {
+            // Se não estiver logado, manda de volta para o início
+            alert("Tens de fazer login primeiro!");
+            window.location.href = "index.html";
+        }
+    });
 
-            elHistory.prepend(pill);
-            // Manter apenas os últimos 5
-            if(elHistory.children.length > 6) {
-                elHistory.removeChild(elHistory.lastChild);
+    // --- Funções Auxiliares ---
+    
+    // ATUALIZADA: Agora guarda o valor na Base de Dados também!
+    async function updateBalance(val) {
+        balance = val;
+        elBalance.textContent = balance.toFixed(2);
+        
+        if (currentUser) {
+            try {
+                const userRef = doc(db, "users", currentUser.uid);
+                await updateDoc(userRef, {
+                    saldo: balance
+                });
+            } catch (error) {
+                console.error("Erro ao guardar saldo:", error);
             }
         }
+    }
 
-        // --- Lógica Principal do Jogo ---
+    // (Esta função mantém-se igual, apenas precisa de estar acessível globalmente)
+    window.adjustBet = function(factor) {
+        let val = parseFloat(elBetInput.value);
+        if(isNaN(val)) val = 10;
+        elBetInput.value = (val * factor).toFixed(2);
+    }
 
-        elBtn.addEventListener('click', () => {
-            if (!isRunning) {
-                startGame();
-            } else {
-                if (hasBet && !hasCashedOut) {
-                    cashOut();
-                }
+    function addToHistory(val) {
+        const pill = document.createElement('span');
+        pill.textContent = val.toFixed(2) + 'x';
+        pill.className = 'history-pill';
+        
+        if(val < 2) pill.classList.add('pill-red');
+        else if(val >= 10) pill.classList.add('pill-gold');
+        else pill.classList.add('pill-green');
+
+        elHistory.prepend(pill);
+        if(elHistory.children.length > 6) {
+            elHistory.removeChild(elHistory.lastChild);
+        }
+    }
+
+    // --- Lógica Principal do Jogo ---
+
+    elBtn.addEventListener('click', () => {
+        if (!isRunning) {
+            startGame();
+        } else {
+            if (hasBet && !hasCashedOut) {
+                cashOut();
             }
-        });
+        }
+    });
 
-        function startGame() {
-            // Validar aposta
-            const betValue = parseFloat(elBetInput.value);
-            if (isNaN(betValue) || betValue <= 0) {
-                elStatus.textContent = "Valor inválido!";
-                return;
-            }
-            if (betValue > balance) {
-                elStatus.textContent = "Saldo insuficiente!";
-                return;
-            }
+    function startGame() {
+        if (!currentUser) return; // Segurança extra
 
-            // Configurar estado inicial
-            currentBet = betValue;
-            updateBalance(balance - currentBet); // Desconta a aposta
-            hasBet = true;
-            hasCashedOut = false;
-            isRunning = true;
-            multiplier = 1.00;
-            elWinnings.textContent = "";
-
-            // Definir ponto de Crash (Aleatório entre 1.00 e 10.00 para demo)
-            // A fórmula Math.random() cria um crash point. 
-            // 30% de probabilidade de crash instantâneo (perto de 1.0) para realismo.
-            crashPoint = (Math.random() * 10) + 1; 
-            if(Math.random() < 0.9) crashPoint = 1.00 + Math.random(); 
-
-            // UI Updates
-            elMultiplier.textContent = "1.00x";
-            elMultiplier.style.color = "white";
-            elRocket.classList.add('flying');
-            elRocket.style.transform = "rotate(-45deg)";
-            elBtn.textContent = "RETIRAR";
-            elBtn.className = "btn btn-cashout";
-            elStatus.textContent = "O foguetão está a subir...";
-            elBetInput.disabled = true; // Bloqueia input durante o jogo
-
-            // Loop do Jogo
-            gameInterval = setInterval(() => {
-                // Incremento do multiplicador (exponencial simples)
-                multiplier += 0.01 + (multiplier * 0.008); 
-
-                elMultiplier.textContent = multiplier.toFixed(2) + 'x';
-
-                // Verifica se o jogador está a jogar e mostra o lucro potencial
-                if(hasBet && !hasCashedOut) {
-                    let potentialWin = (currentBet * multiplier).toFixed(2);
-                    elBtn.textContent = `RETIRAR (€${potentialWin})`;
-                }
-
-                // Verifica se Crashed
-                if (multiplier >= crashPoint) {
-                    crash();
-                }
-            }, 50); // Velocidade do loop
+        const betValue = parseFloat(elBetInput.value);
+        if (isNaN(betValue) || betValue <= 0) {
+            elStatus.textContent = "Valor inválido!";
+            return;
+        }
+        if (betValue > balance) {
+            elStatus.textContent = "Saldo insuficiente!";
+            return;
         }
 
-        function cashOut() {
-            if(!isRunning || hasCashedOut) return;
-            
-            hasCashedOut = true;
-            const winAmount = currentBet * multiplier;
-            updateBalance(balance + winAmount);
-            
-            // UI Feedback
-            elStatus.textContent = `Ganhaste €${winAmount.toFixed(2)}!`;
-            elWinnings.textContent = `+ €${winAmount.toFixed(2)}`;
-            elBtn.className = "btn btn-waiting";
-            elBtn.textContent = "ESPERANDO CRASH...";
-            elMultiplier.style.color = "#4ade80"; // Verde
-        }
+        currentBet = betValue;
+        updateBalance(balance - currentBet); // Desconta e guarda na BD
+        
+        hasBet = true;
+        hasCashedOut = false;
+        isRunning = true;
+        multiplier = 1.00;
+        elWinnings.textContent = "";
 
-        function crash() {
-            clearInterval(gameInterval);
-            isRunning = false;
-            elRocket.classList.remove('flying');
-            elRocket.style.transform = "rotate(90deg) translate(50px, 50px)"; // Foguetão cai
-            
-            elMultiplier.textContent = "CRASHED @ " + crashPoint.toFixed(2) + "x";
-            elMultiplier.style.color = "#ef4444"; // Vermelho
-            
-            addToHistory(crashPoint);
+        // Lógica de Crash (Igual ao original)
+        crashPoint = (Math.random() * 10) + 1; 
+        if(Math.random() < 0.3) crashPoint = 1.00 + Math.random(); // Ajustei probabilidade
 
-            elBetInput.disabled = false;
+        elMultiplier.textContent = "1.00x";
+        elMultiplier.style.color = "white";
+        elRocket.classList.add('flying');
+        elRocket.style.transform = "rotate(-45deg)";
+        elBtn.textContent = "RETIRAR";
+        elBtn.className = "btn btn-cashout";
+        elStatus.textContent = "O foguetão está a subir...";
+        elBetInput.disabled = true;
+
+        gameInterval = setInterval(() => {
+            multiplier += 0.01 + (multiplier * 0.008); 
+            elMultiplier.textContent = multiplier.toFixed(2) + 'x';
 
             if(hasBet && !hasCashedOut) {
-                elStatus.textContent = "O foguetão explodiu! Perdeste a aposta.";
-                elStatus.style.color = "#ef4444";
-            } else if (hasBet && hasCashedOut) {
-                elStatus.textContent = "Boa! Retiraste antes do crash.";
-                elStatus.style.color = "#4ade80";
+                let potentialWin = (currentBet * multiplier).toFixed(2);
+                elBtn.textContent = `RETIRAR (€${potentialWin})`;
             }
 
-            // Reset Botão
-            setTimeout(() => {
-                elBtn.className = "btn btn-bet";
-                elBtn.textContent = "APOSTAR";
-                elRocket.style.transform = "rotate(0deg)";
-                elStatus.style.color = "var(--text-gray)";
-            }, 2000);
+            if (multiplier >= crashPoint) {
+                crash();
+            }
+        }, 50);
+    }
+
+    function cashOut() {
+        if(!isRunning || hasCashedOut) return;
+        
+        hasCashedOut = true;
+        const winAmount = currentBet * multiplier;
+        
+        updateBalance(balance + winAmount); // Soma e guarda na BD
+        
+        elStatus.textContent = `Ganhaste €${winAmount.toFixed(2)}!`;
+        elWinnings.textContent = `+ €${winAmount.toFixed(2)}`;
+        elBtn.className = "btn btn-waiting";
+        elBtn.textContent = "ESPERANDO CRASH...";
+        elMultiplier.style.color = "#4ade80";
+    }
+
+    function crash() {
+        clearInterval(gameInterval);
+        isRunning = false;
+        elRocket.classList.remove('flying');
+        elRocket.style.transform = "rotate(90deg) translate(50px, 50px)";
+        
+        elMultiplier.textContent = "CRASHED @ " + crashPoint.toFixed(2) + "x";
+        elMultiplier.style.color = "#ef4444";
+        
+        addToHistory(crashPoint);
+        elBetInput.disabled = false;
+
+        if(hasBet && !hasCashedOut) {
+            elStatus.textContent = "O foguetão explodiu! Perdeste a aposta.";
+            elStatus.style.color = "#ef4444";
+        } else if (hasBet && hasCashedOut) {
+            elStatus.textContent = "Boa! Retiraste antes do crash.";
+            elStatus.style.color = "#4ade80";
         }
-    </script>
+
+        setTimeout(() => {
+            elBtn.className = "btn btn-bet";
+            elBtn.textContent = "APOSTAR";
+            elRocket.style.transform = "rotate(0deg)";
+            elStatus.style.color = "var(--text-gray)";
+        }, 2000);
+    }
+</script>
 </body>
 </html>
