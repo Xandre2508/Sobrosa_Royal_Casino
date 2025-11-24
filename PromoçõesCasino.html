@@ -13,7 +13,7 @@
 
     <nav class="navbar">
         <div class="container nav-content">
-            <a href="Pagina-Inicial-Casino.html" class="logo, logo-text"> </a>
+            <a href="index.html" class="logo, logo-text"> </a>
             <div class="logo">
                 <img src="./Imagens-Casino/SobrosaRoyalCasino.png" class="logo-img" alt="Sobrosa Logo" style="width: 200px; height: 200px;" >
                 <div class="logo-text">
@@ -23,8 +23,8 @@
             </div>
 
             <div class="nav-links">
-                <a href="Pagina-Inicial-Casino.html">Inicio</a>
-                <a href="Pagina-Inicial-Casino.html#jogos">Jogos</a>
+                <a href="index.html">Inicio</a>
+                <a href="index.html">Jogos</a>
                 <a href="PromoçõesCasino.html" class="active">Promoções</a>
                 <a href="#">VIP</a>
                 <a href="Sobre.html">Sobre</a>
@@ -237,6 +237,56 @@
         }
     });
 </script>
+
+<script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBZXk1befV9zRKifrADxknJtrKedFWnEnI",
+            authDomain: "casinoroyalesobrosa.firebaseapp.com",
+            projectId: "casinoroyalesobrosa",
+            storageBucket: "casinoroyalesobrosa.firebasestorage.app",
+            messagingSenderId: "1078874375334",
+            appId: "1:1078874375334:web:ac4a2c445655c65245a067",
+            measurementId: "G-8SYMPVFSF9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        onAuthStateChanged(auth, async (user) => {
+            const btnLogin = document.getElementById('nav-login-btn');
+            const btnRegisto = document.getElementById('nav-register-btn');
+
+            if (user) {
+                let nome = "Jogador";
+                try {
+                    const snap = await getDoc(doc(db, "users", user.uid));
+                    if(snap.exists()) nome = snap.data().nome;
+                } catch(e){}
+
+                btnLogin.innerHTML = `<i class="fa-solid fa-user"></i> ${nome}`;
+                btnLogin.onclick = null;
+                
+                btnRegisto.textContent = "SAIR";
+                btnRegisto.classList.remove('btn-gradient');
+                btnRegisto.classList.add('btn-outline');
+                btnRegisto.style.borderColor = "#ef4444";
+                btnRegisto.style.color = "#ef4444";
+                btnRegisto.onclick = async () => {
+                    await signOut(auth);
+                    window.location.reload();
+                };
+            } else {
+                 // Se não estiver logado, os botões mandam para a página inicial (onde está o formulário)
+                btnLogin.onclick = () => window.location.href = 'index.html';
+                btnRegisto.onclick = () => window.location.href = 'index.html';
+            }
+        });
+    </script>
 
 </body>
 </html>
