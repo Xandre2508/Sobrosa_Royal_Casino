@@ -1,0 +1,11 @@
+            --MERDAS QUE FALTAM NO SITE--
+
+    1 - por a auticaçao da pagina vips a funcionar, ainda nao autentica automaticamente.
+    2 - criar aba do perfil ao clicar no nome apos estar logado para aparecer defenicoes de conta, seguranca, o que foi apostado etc
+    3 - remover ao entrar no crash os creditos automaticos (neste caso 1000) deve aparecer 0 ou simplesmente o saldo da conta o que esta a acontecer é entrar no crash loggado e aparecer 1000 na conta e so depois passa para o saldo verdadeiro.
+    4- fazer pagina Jogos
+    5 - tentar fazer o restante dos jogos
+    6 - fazer com que dê para comprar os vips com saldo do casino e apareça o devido estatuto
+    7 - mandar o gemini por o trabalho todo para uma das framework sem nos fodermos :)
+    8 - Painel Admin
+
