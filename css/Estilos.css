@@ -676,8 +676,8 @@ ul { list-style: none; }
     position: fixed;
     top: 0;
     left: 0;
-    width: 400px;      /* Tamanho da luz */
-    height: 400px;
+    width: 100px;      /* Tamanho da luz */
+    height: 100px;
     
     /* A luz laranja/dourada */
     background: radial-gradient(
