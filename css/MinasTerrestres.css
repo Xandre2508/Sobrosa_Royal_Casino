@@ -1,0 +1,162 @@
+/* =========================================
+   ESTILOS DO JOGO MINAS
+   ========================================= */
+
+.game-section {
+    padding-top: 140px; /* Ajuste para não bater na navbar */
+    padding-bottom: 60px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mines-interface {
+    display: flex;
+    gap: 40px;
+    background: #1e293b;
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(255,255,255,0.05);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Painel de Controlos */
+.mines-controls {
+    flex: 1;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.control-group label {
+    display: block;
+    color: var(--text-gray);
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.input-wrapper { display: flex; gap: 5px; }
+.input-wrapper input {
+    background: #0f172a;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white; padding: 10px; border-radius: 6px; width: 100%; font-weight: 700;
+}
+
+.btn-half, .btn-double {
+    background: rgba(255,255,255,0.1); border: none; color: white;
+    border-radius: 6px; width: 50px; cursor: pointer; transition: 0.2s;
+}
+.btn-half:hover, .btn-double:hover { background: rgba(255,255,255,0.2); }
+
+/* Seletores */
+.size-selector, .mines-selector {
+    display: flex; gap: 5px; background: #0f172a; padding: 5px;
+    border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap;
+}
+
+.size-btn, .mine-btn {
+    flex: 1; background: transparent; border: none; color: var(--text-gray);
+    padding: 8px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s;
+}
+.size-btn:hover, .mine-btn:hover { color: white; background: rgba(255,255,255,0.05); }
+
+.size-btn.active, .mine-btn.active {
+    background: var(--primary); color: white; box-shadow: 0 2px 10px rgba(255, 136, 96, 0.3);
+}
+
+/* Info e Botão */
+.game-info {
+    background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);
+}
+.info-row { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.9rem; color: var(--text-gray); }
+
+.btn-large {
+    width: 100%; padding: 16px; font-size: 1.1rem; margin-top: 10px;
+    border-radius: 8px; font-weight: 800;
+}
+
+/* Botão Verde de Cashout */
+.btn-cashout {
+    background: #10b981 !important;
+    color: white !important;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.4) !important;
+    border: none !important;
+}
+.btn-cashout:hover { background: #059669 !important; transform: translateY(-2px); }
+
+/* Área da Grelha */
+.mines-board-wrapper {
+    flex: 2;
+    display: flex;
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+    background: #0f172a;
+    border-radius: 12px;
+    padding: 20px;
+    width: 100%; /* Garante que ocupa o espaço todo */
+}
+
+.mines-grid {
+    display: grid;
+    /* ADICIONA ESTA LINHA: Define 5 colunas por defeito */
+    grid-template-columns: repeat(5, 1fr); 
+    
+    gap: 8px;
+    width: 100%;
+    max-width: 450px;
+    aspect-ratio: 1/1;
+    margin: 0 auto; /* Centra a grelha horizontalmente */
+}
+
+/* O QUADRADO (TILE) */
+.tile {
+    background: #334155;
+    border-radius: 8px;
+    border-bottom: 4px solid #1e293b;
+    cursor: pointer;
+    transition: all 0.1s;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    position: relative;
+    overflow: hidden;
+
+    /* --- A CORREÇÃO ESTÁ AQUI --- */
+    width: 100%;           /* Ocupa a largura da coluna */
+    aspect-ratio: 1 / 1;   /* OBRIGA A ALTURA A SER IGUAL À LARGURA (Quadrado Perfeito) */
+    min-height: 40px;      /* Segurança extra para não desaparecer */
+}
+
+/* Efeitos visuais mantidos */
+.tile:hover { background: #475569; transform: translateY(-2px); }
+.tile:active { transform: translateY(2px); border-bottom-width: 0px; }
+
+.tile.revealed { 
+    background: #0f172a; 
+    border: 1px solid rgba(255,255,255,0.05); 
+    border-bottom: none; 
+    transform: none; 
+    cursor: default; 
+}
+
+/* Animações dos Ícones */
+.tile.gem i { color: #00d2ff; text-shadow: 0 0 10px #00d2ff; animation: pop 0.3s; }
+.tile.bomb { background: rgba(239, 68, 68, 0.2); }
+.tile.bomb i { color: #ef4444; animation: shake 0.5s; }
+.tile.exploded { background: radial-gradient(circle, #ef4444 0%, #7f1d1d 100%); border: 2px solid #fff; }
+
+@keyframes pop { 0% { transform: scale(0); } 80% { transform: scale(1.2); } 100% { transform: scale(1); } }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+/* Mobile */
+@media (max-width: 850px) {
+    .mines-interface { flex-direction: column-reverse; }
+    .mines-controls { max-width: 100%; }
+}
