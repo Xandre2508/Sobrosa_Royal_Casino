@@ -7,37 +7,11 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="Estilos.css">
-    <script src="DataBase.js" defer></script>
+    <link rel="stylesheet" href="css/Estilos.css">
+
     
 </head>
 <body>
-
-    <nav class="navbar">
-        <div class="container nav-content">
-            <a href="index.html" class="logo, logo-text"> </a>
-            <div class="logo">
-                <img src="./Imagens-Casino/SobrosaRoyalCasino.png" class="logo-img" alt="Sobrosa Logo" style="width: 200px; height: 200px;" >
-                <div class="logo-text">
-                    <h1>SOBROSA ROYAL</h1>
-                    <span>Casino • Sobre</span>
-                </div>
-            </div>
-
-            <div class="nav-links">
-                <a href="index.html">Inicio</a>
-                <a href="index.html">Jogos</a>
-                <a href="PromoçõesCasino.html">Promoções</a>
-                <a href="Vips.html">VIP</a>
-                <a href="Sobre.html" class="active">Sobre</a>
-            </div>
-
-            <div class="nav-actions">
-                <button class="btn btn-outline" onclick="toggleLogin()">ENTRAR</button>
-                <button class="btn btn-gradient" onclick="toggleRegister()">REGISTO</button>
-            </div>
-        </div>
-    </nav>
 
 <header class="hero" > 
         <div class="hero-bg">
@@ -312,6 +286,9 @@
         }
     });
 </script>
+
+    <script src="js/ui.js"></script>
+    <script type="module" src="js/auth.js"></script>
 
 </body>
 </html>

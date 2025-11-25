@@ -7,38 +7,9 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="Estilos.css">
-    <script src="DataBase.js" defer></script>
+    <link rel="stylesheet" href="css/Estilos.css">
 </head>
 <body>
-
-    <nav class="navbar">
-        <div class="container nav-content">
-            <a href="index.html" class="logo, logo-text"> </a>
-            <div class="logo">
-                <img src="./Imagens-Casino/SobrosaRoyalCasino.png" class="logo-img" alt="Sobrosa Logo" style="width: 200px; height: 200px;" >
-                <div class="logo-text">
-                    <h1>SOBROSA ROYAL</h1>
-                    <span>Casino • Versão Alfa</span>
-                </div>
-            </div>
-
-            <div class="nav-links">
-                <a href="index.html">Inicio</a>
-                <a href="#">Jogos</a>
-                <a href="PromoçõesCasino.html">Promoções</a>
-                <a href="Vips.html">VIP</a>
-                <a href="Sobre.html">Sobre</a>
-            </div>
-            
-            <div class="nav-actions">
-                <button class="btn btn-outline" onclick="toggleLogin()">ENTRAR</button>
-                <!-- Alterado para chamar a função de registo -->
-                <button class="btn btn-gradient" onclick="toggleRegister()">REGISTO</button>
-            </div>
-
-        </div>
-    </nav>
 
     <header class="hero">
         <div class="hero-bg">
@@ -123,7 +94,6 @@
                             <h3 style="font-size: 1.5rem; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.8);">Slots</h3>
                         </div>
                     </div>
-
                     <div class="card-content">
                         <h3>Golden Slots</h3>
                         <p>Faz a tua aposta, clica em jogar e ganha a chance de mudar de vida.</p>
@@ -178,205 +148,21 @@
                             <h3 style="font-size: 1.5rem; font-weight: 700;">Crash Game Beta</h3>
                         </div>
                     </div>
-                    
                     <div class="card-content">
-                    <h3>SPACE CRASH <i class="fa-solid fa-rocket"></i> (Beta)</h3>
-                    <p>Multiplicador espacial. Retira antes de explodir!</p> 
+                        <h3>SPACE CRASH <i class="fa-solid fa-rocket"></i> (Beta)</h3>
+                        <p>Multiplicador espacial. Retira antes de explodir!</p> 
                         <div class="card-footer">
                             <span class="tag">Novo</span>
                             <a href="Crashgame.html" class="link-play btn-jogar btn-outline" >Jogar</a>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h4 class="footer-title brand-title">SOBROSA ROYAL</h4>
-                    <p class="footer-desc">
-                        Casino Clube é uma demo construída para fins educativos e de demonstração. Este site não processa dinheiro real.
-                    </p>
-                </div>
-                <div class="footer-col">
-                    <h4 class="footer-title">Casino</h4>
-                    <ul class="footer-links">
-                        <li><a href="#">Slots</a></li>
-                        <li><a href="#">Roleta</a></li>
-                        <li><a href="#">Minas Terrestres</a></li>
-                        <li><a href="#">Space Crash</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4 class="footer-title">Suporte</h4>
-                    <ul class="footer-links">
-                        <li><a href="#">Contacte-nos</a></li>
-                        <li><a href="#">Termos e Condições</a></li>
-                        <li><a href="#">Jogo Responsável</a></li>
-                        <li><a href="#">Política de Privacidade</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4 class="footer-title">Pagamentos Seguros</h4>
-                    <div class="payment-icons">
-                        <i class="fa-brands fa-cc-visa"></i>
-                        <i class="fa-brands fa-cc-mastercard"></i>
-                        <i class="fa-brands fa-bitcoin"></i>
-                        <i class="fa-brands fa-cc-paypal"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Casino Clube — Demo. Todos os direitos reservados.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- JANELA DE LOGIN -->
-    <div class="overlay" id="loginOverlay">
-        <div class="login-card">
-            <h2>Entrar</h2>
-            <form id="loginForm" class="login-form">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="utilizador@exemplo.com" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Palavra-passe</label>
-                    <input type="password" id="password" placeholder="••••••" required>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn-cancel" onclick="toggleLogin()">Cancelar</button>
-                    <button type="submit" class="btn-confirm">Enviar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- JANELA DE REGISTO -->
-    <div class="overlay" id="registerOverlay">
-        <div class="login-card">
-            <h2>Criar Conta</h2>
-            <form id="registerForm" class="login-form">
-                <div class="form-group">
-                    <label>Nome de Jogador</label>
-                    <input type="text" id="reg-name" placeholder="O teu nome" required>
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="reg-email" placeholder="email@exemplo.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Palavra-passe</label>
-                    <input type="password" id="reg-password" placeholder="Mínimo 6 caracteres" required>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn-cancel" onclick="toggleRegister()">Cancelar</button>
-                    <button type="submit" class="btn-confirm">Criar Conta</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- CÓDIGO FIREBASE + LÓGICA -->
-    <script>
-        // --- 4. Lógica de LOGIN (Entrar) ---
-        const loginForm = document.getElementById('loginForm'); 
-        if(loginForm) {
-            loginForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                
-                const email = document.getElementById('email').value;
-                const pass = document.getElementById('password').value;
-
-                try {
-                    await signInWithEmailAndPassword(auth, email, pass);
-                    alert("Entraste com sucesso!");
-                    toggleLogin(); // Fecha janela
-                } catch (error) {
-                    alert("Email ou password incorretos!");
-                    console.error(error);
-                }
-            });
-        }
-
-        // --- 5. Verificar Estado (Se está logado ou não) ---
-        onAuthStateChanged(auth, async (user) => {
-            const btnLogin = document.querySelector('.nav-actions .btn-outline'); 
-            const btnRegisto = document.querySelector('.nav-actions .btn-gradient'); 
-
-            if (user) {
-                // LOGADO: Tenta buscar o nome à base de dados
-                let nomeDisplay = "Jogador";
-                try {
-                    const docSnap = await getDoc(doc(db, "users", user.uid));
-                    if (docSnap.exists()) {
-                        nomeDisplay = docSnap.data().nome;
-                    }
-                } catch(e) { console.log("Erro ao ler nome:", e); }
-
-                // Atualiza Botões
-                btnLogin.innerHTML = `<i class="fa-solid fa-user"></i> ${nomeDisplay}`;
-                btnLogin.onclick = null; // Remove a ação de login
-                
-                // Botão de Registo passa a ser SAIR
-                if(btnRegisto) {
-                    btnRegisto.textContent = "SAIR";
-                    btnRegisto.classList.remove('btn-gradient');
-                    btnRegisto.classList.add('btn-outline');
-                    btnRegisto.style.borderColor = "#ef4444"; // Borda vermelha
-                    btnRegisto.style.color = "#ef4444";
-                    
-                    btnRegisto.onclick = async () => {
-                        await signOut(auth);
-                        window.location.reload();
-                    };
-                }
-
-            } else {
-                // NÃO LOGADO: Repõe os botões originais
-                if(btnLogin) {
-                    btnLogin.textContent = "ENTRAR";
-                    btnLogin.onclick = toggleLogin;
-                }
-                if(btnRegisto) {
-                    btnRegisto.textContent = "REGISTO";
-                    btnRegisto.classList.add('btn-gradient');
-                    btnRegisto.classList.remove('btn-outline');
-                    btnRegisto.style.borderColor = "";
-                    btnRegisto.style.color = "";
-                    btnRegisto.onclick = toggleRegister;
-                }
-            }
-        });
-
-        // --- 6. Funções das Janelas (Popups) ---
-        window.toggleLogin = function() {
-            const overlay = document.getElementById('loginOverlay');
-            const regOverlay = document.getElementById('registerOverlay');
-            if(regOverlay) regOverlay.classList.remove('active');
-            overlay.classList.toggle('active');
-        }
-
-        window.toggleRegister = function() {
-            const overlay = document.getElementById('registerOverlay');
-            const logOverlay = document.getElementById('loginOverlay');
-            if(logOverlay) logOverlay.classList.remove('active');
-            overlay.classList.toggle('active');
-        }
-
-        // Fechar ao clicar fora
-        window.onclick = function(event) {
-            const lOverlay = document.getElementById('loginOverlay');
-            const rOverlay = document.getElementById('registerOverlay');
-            if (event.target == lOverlay) lOverlay.classList.remove('active');
-            if (event.target == rOverlay) rOverlay.classList.remove('active');
-        }
-    </script>
+    <script src="js/ui.js"></script>
+    <script type="module" src="js/auth.js"></script>
 
 </body>
 </html>

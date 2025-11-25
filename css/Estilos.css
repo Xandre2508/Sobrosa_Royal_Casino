@@ -305,7 +305,7 @@ ul { list-style: none; }
 /* --- 4. HERO (COM IMAGEM FOCADA) --- */
 .hero {
     position: relative; padding: 180px 0 100px 0; overflow: hidden;
-    min-height: 80vh; display: flex; align-items: center;
+    min-height: 850px; display: flex; align-items: center;
 }
 .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
 .hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
@@ -668,4 +668,32 @@ ul { list-style: none; }
     font-size: 0.95rem;
     color: #e2e8f0;
     display: block;
+}
+
+/* --- APAGA O body::before ANTIGO E COLOCA ISTO --- */
+
+.luz-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 400px;      /* Tamanho da luz */
+    height: 400px;
+    
+    /* A luz laranja/dourada */
+    background: radial-gradient(
+        circle, 
+        rgba(255, 136, 96, 0.15) 0%, 
+        transparent 60%
+    );
+    
+    /* Garante que o centro da bola fica na ponta do rato */
+    transform: translate(-50%, -50%); 
+    
+    /* Configurações de Camada */
+    z-index: 1;                 /* Fica por cima do fundo */
+    pointer-events: none;       /* Deixa clicar através dela */
+    mix-blend-mode: screen;     /* Mistura suavemente com o preto */
+    
+    /* O SEGREDO DA VELOCIDADE: */
+    will-change: left, top;     /* Avisa o navegador para não atrasar */
 }

@@ -7,7 +7,7 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="Estilos.css">
+    <link rel="stylesheet" href="css/Estilos.css">
 </head>
 <body>
 
@@ -37,7 +37,7 @@
         </div>
     </nav>
 
-    <header class="hero" style="min-height: 500px;">
+    <header class="hero">
         <div class="hero-bg">
             <img src="./Imagens-Casino/casinobackground.png" alt="Fundo VIP">
             <div class="hero-overlay"></div>
@@ -58,7 +58,14 @@
             </div>
             
             <div style="display: flex; justify-content: center;">
-                <i class="fa-solid fa-gem" style="font-size: 15rem; background: var(--gradient-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.3));"></i>
+                <span style="display:inline-block;">
+                    <i class="fa-solid fa-gem" aria-hidden="true" role="img"
+                         style="font-size:12rem; display:block;
+                                        background: linear-gradient(90deg,#f7e2a6,#d4af37 50%,#ffd27a);
+                                        -webkit-background-clip: text; background-clip: text;
+                                        -webkit-text-fill-color: transparent; filter: drop-shadow(0 8px 30px rgba(212,175,55,0.25));">
+                    </i>
+                </span>
             </div>
         </div>
     </header>
@@ -200,6 +207,9 @@
         if(closeModal) closeModal.addEventListener('click', ()=> overlay.classList.remove('open'));
         overlay.addEventListener('click', (e)=> { if(e.target===overlay) overlay.classList.remove('open'); });
     </script>
+    
+
+<script type="module" src="js/auth.js"></script>
 
 </body>
 </html>

@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="Estilos.css">
-    <link rel="stylesheet" href="CrashGame.css">
+    <link rel="stylesheet" href="css/Estilos.css">
+    <link rel="stylesheet" href="css/CrashGame.css">
+
+    <script type="module" src="js/crash-game.js"></script>
     
 </head>
 <body>
@@ -25,8 +27,8 @@
             </div>
             <div class="nav-actions">
                 <div style="margin-right: 20px;">
-                    <span style="color: var(--text-gray); font-size: 0.8rem;">Saldo Demo:</span>
-                    <span class="text-gold" style="font-weight: 700; font-size: 1.1rem;">€ <span id="userBalance">1000.00</span></span>
+                    <span style="color: var(--text-gray); font-size: 0.8rem;">Saldo:</span>
+                    <span class="text-gold" style="font-weight: 700; font-size: 1.1rem;">€ <span id="userBalance">1000</span></span>
                 </div>
                 <a href="index.html" class="btn btn-outline"><i class="fa-solid fa-arrow-left"></i> Sair</a>
             </div>
@@ -45,12 +47,12 @@
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <button class="btn btn-outline" onclick="adjustBet(0.5)">1/2</button>
-                <button class="btn btn-outline" onclick="adjustBet(2)">x2</button>
+                <button class="btn btn-outline" onclick="window.adjustBet(0.5)">1/2</button>
+                <button class="btn btn-outline" onclick="window.adjustBet(2)">x2</button>
             </div>
 
             <div id="statusMessage" style="margin-top: 10px; min-height: 20px; color: var(--text-gray); font-size: 0.9rem; text-align: center;">
-                Insere o valor e aposta!
+                A aguardar início...
             </div>
 
             <button id="actionBtn" class="btn btn-bet">
@@ -62,10 +64,7 @@
             <div class="grid-bg"></div>
             
             <div class="history-bar" id="historyBar">
-                <span class="history-pill pill-red">1.20x</span>
-                <span class="history-pill pill-green">5.43x</span>
-                <span class="history-pill pill-gold">12.00x</span>
-            </div>
+                </div>
 
             <div class="game-content">
                 <div id="rocket" class="rocket-icon">
@@ -78,214 +77,5 @@
 
     </div>
 
-    <script type="module">
-    // --- 1. Importar Firebase ---
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    // --- 2. CONFIGURAÇÃO (COLA AQUI AS TUAS CHAVES) ---
-    const firebaseConfig = {
-        apiKey: "",
-        authDomain: "",
-        projectId: "",
-        storageBucket: "",
-        messagingSenderId: "",
-        appId: ""
-    };
-
-    // Iniciar Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    // --- 3. Variáveis do Jogo ---
-    let currentUser = null; // Vai guardar quem é o jogador
-    let balance = 0;        // Começa a zero até carregar da base de dados
-    let currentBet = 0;
-    let multiplier = 1.00;
-    let gameInterval;
-    let isRunning = false;
-    let hasBet = false;
-    let hasCashedOut = false;
-    let crashPoint = 0;
-
-    // --- Elementos do DOM ---
-    const elBalance = document.getElementById('userBalance');
-    const elMultiplier = document.getElementById('multiplier');
-    const elRocket = document.getElementById('rocket');
-    const elBtn = document.getElementById('actionBtn');
-    const elBetInput = document.getElementById('betAmount');
-    const elStatus = document.getElementById('statusMessage');
-    const elHistory = document.getElementById('historyBar');
-    const elWinnings = document.getElementById('winningsDisplay');
-
-    // --- 4. VERIFICAR LOGIN E CARREGAR SALDO ---
-    onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            currentUser = user;
-            // Carregar saldo da base de dados
-            const docRef = doc(db, "users", user.uid);
-            const docSnap = await getDoc(docRef);
-            
-            if (docSnap.exists()) {
-                const dados = docSnap.data();
-                balance = dados.saldo; // Atualiza a variável local com o saldo real
-                elBalance.textContent = balance.toFixed(2);
-                elStatus.textContent = `Bem-vindo, ${dados.nome}!`;
-            }
-        } else {
-            // Se não estiver logado, manda de volta para o início
-            alert("Tens de fazer login primeiro!");
-            window.location.href = "index.html";
-        }
-    });
-
-    // --- Funções Auxiliares ---
-    
-    // ATUALIZADA: Agora guarda o valor na Base de Dados também!
-    async function updateBalance(val) {
-        balance = val;
-        elBalance.textContent = balance.toFixed(2);
-        
-        if (currentUser) {
-            try {
-                const userRef = doc(db, "users", currentUser.uid);
-                await updateDoc(userRef, {
-                    saldo: balance
-                });
-            } catch (error) {
-                console.error("Erro ao guardar saldo:", error);
-            }
-        }
-    }
-
-    // (Esta função mantém-se igual, apenas precisa de estar acessível globalmente)
-    window.adjustBet = function(factor) {
-        let val = parseFloat(elBetInput.value);
-        if(isNaN(val)) val = 10;
-        elBetInput.value = (val * factor).toFixed(2);
-    }
-
-    function addToHistory(val) {
-        const pill = document.createElement('span');
-        pill.textContent = val.toFixed(2) + 'x';
-        pill.className = 'history-pill';
-        
-        if(val < 2) pill.classList.add('pill-red');
-        else if(val >= 10) pill.classList.add('pill-gold');
-        else pill.classList.add('pill-green');
-
-        elHistory.prepend(pill);
-        if(elHistory.children.length > 6) {
-            elHistory.removeChild(elHistory.lastChild);
-        }
-    }
-
-    // --- Lógica Principal do Jogo ---
-
-    elBtn.addEventListener('click', () => {
-        if (!isRunning) {
-            startGame();
-        } else {
-            if (hasBet && !hasCashedOut) {
-                cashOut();
-            }
-        }
-    });
-
-    function startGame() {
-        if (!currentUser) return; // Segurança extra
-
-        const betValue = parseFloat(elBetInput.value);
-        if (isNaN(betValue) || betValue <= 0) {
-            elStatus.textContent = "Valor inválido!";
-            return;
-        }
-        if (betValue > balance) {
-            elStatus.textContent = "Saldo insuficiente!";
-            return;
-        }
-
-        currentBet = betValue;
-        updateBalance(balance - currentBet); // Desconta e guarda na BD
-        
-        hasBet = true;
-        hasCashedOut = false;
-        isRunning = true;
-        multiplier = 1.00;
-        elWinnings.textContent = "";
-
-        // Lógica de Crash (Igual ao original)
-        crashPoint = (Math.random() * 10) + 1; 
-        if(Math.random() < 0.3) crashPoint = 1.00 + Math.random(); // Ajustei probabilidade
-
-        elMultiplier.textContent = "1.00x";
-        elMultiplier.style.color = "white";
-        elRocket.classList.add('flying');
-        elRocket.style.transform = "rotate(-45deg)";
-        elBtn.textContent = "RETIRAR";
-        elBtn.className = "btn btn-cashout";
-        elStatus.textContent = "O foguetão está a subir...";
-        elBetInput.disabled = true;
-
-        gameInterval = setInterval(() => {
-            multiplier += 0.01 + (multiplier * 0.008); 
-            elMultiplier.textContent = multiplier.toFixed(2) + 'x';
-
-            if(hasBet && !hasCashedOut) {
-                let potentialWin = (currentBet * multiplier).toFixed(2);
-                elBtn.textContent = `RETIRAR (€${potentialWin})`;
-            }
-
-            if (multiplier >= crashPoint) {
-                crash();
-            }
-        }, 50);
-    }
-
-    function cashOut() {
-        if(!isRunning || hasCashedOut) return;
-        
-        hasCashedOut = true;
-        const winAmount = currentBet * multiplier;
-        
-        updateBalance(balance + winAmount); // Soma e guarda na BD
-        
-        elStatus.textContent = `Ganhaste €${winAmount.toFixed(2)}!`;
-        elWinnings.textContent = `+ €${winAmount.toFixed(2)}`;
-        elBtn.className = "btn btn-waiting";
-        elBtn.textContent = "ESPERANDO CRASH...";
-        elMultiplier.style.color = "#4ade80";
-    }
-
-    function crash() {
-        clearInterval(gameInterval);
-        isRunning = false;
-        elRocket.classList.remove('flying');
-        elRocket.style.transform = "rotate(90deg) translate(50px, 50px)";
-        
-        elMultiplier.textContent = "CRASHED @ " + crashPoint.toFixed(2) + "x";
-        elMultiplier.style.color = "#ef4444";
-        
-        addToHistory(crashPoint);
-        elBetInput.disabled = false;
-
-        if(hasBet && !hasCashedOut) {
-            elStatus.textContent = "O foguetão explodiu! Perdeste a aposta.";
-            elStatus.style.color = "#ef4444";
-        } else if (hasBet && hasCashedOut) {
-            elStatus.textContent = "Boa! Retiraste antes do crash.";
-            elStatus.style.color = "#4ade80";
-        }
-
-        setTimeout(() => {
-            elBtn.className = "btn btn-bet";
-            elBtn.textContent = "APOSTAR";
-            elRocket.style.transform = "rotate(0deg)";
-            elStatus.style.color = "var(--text-gray)";
-        }, 2000);
-    }
-</script>
-</body>
+    </body>
 </html>

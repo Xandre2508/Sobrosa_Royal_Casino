@@ -7,40 +7,14 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="Estilos.css">
-    <script src="DataBase.js" defer></script>
+    <link rel="stylesheet" href="css/Estilos.css">
+    
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="container nav-content">
-            <a href="index.html" class="logo, logo-text"> </a>
-            <div class="logo">
-                <img src="./Imagens-Casino/SobrosaRoyalCasino.png" class="logo-img" alt="Sobrosa Logo" style="width: 200px; height: 200px;" >
-                <div class="logo-text">
-                    <h1>SOBROSA ROYAL</h1>
-                    <span>Casino • Promoções</span>
-                </div>
-            </div>
-
-            <div class="nav-links">
-                <a href="index.html">Inicio</a>
-                <a href="index.html">Jogos</a>
-                <a href="PromoçõesCasino.html" class="active">Promoções</a>
-                <a href="Vips.html">VIP</a>
-                <a href="Sobre.html">Sobre</a>
-            </div>
-
-            <div class="nav-actions">
-                <button class="btn btn-outline" onclick="toggleLogin()">ENTRAR</button>
-                <button class="btn btn-gradient" id="openRegister">REGISTO</button>
-            </div>
-        </div>
-    </nav>
-
     <header class="hero">
         <div class="hero-bg">
-            <img src="./Imagens-Casino/casinobackground.png" alt="Fundo Promo">
+            <img src="./Imagens-Casino/casinobackground.png" alt="Fundo Promo"> 
             <div class="hero-overlay"></div>
             <div class="hero-gradient"></div>
         </div>
@@ -220,74 +194,8 @@
     </div>
 </div>
 
-    <script>
-    function toggleLogin() {
-        const overlay = document.getElementById('loginOverlay');
-        
-        if (overlay.classList.contains('active')) {
-            overlay.classList.remove('active');
-        } else {
-            overlay.classList.add('active');
-        }
-    }
-
-    // Fechar ao clicar fora da caixa
-    document.getElementById('loginOverlay').addEventListener('click', function(e) {
-        if (e.target === this) {
-            toggleLogin();
-        }
-    });
-</script>
-
-<script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBZXk1befV9zRKifrADxknJtrKedFWnEnI",
-            authDomain: "casinoroyalesobrosa.firebaseapp.com",
-            projectId: "casinoroyalesobrosa",
-            storageBucket: "casinoroyalesobrosa.firebasestorage.app",
-            messagingSenderId: "1078874375334",
-            appId: "1:1078874375334:web:ac4a2c445655c65245a067",
-            measurementId: "G-8SYMPVFSF9"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        onAuthStateChanged(auth, async (user) => {
-            const btnLogin = document.getElementById('nav-login-btn');
-            const btnRegisto = document.getElementById('nav-register-btn');
-
-            if (user) {
-                let nome = "Jogador";
-                try {
-                    const snap = await getDoc(doc(db, "users", user.uid));
-                    if(snap.exists()) nome = snap.data().nome;
-                } catch(e){}
-
-                btnLogin.innerHTML = `<i class="fa-solid fa-user"></i> ${nome}`;
-                btnLogin.onclick = null;
-                
-                btnRegisto.textContent = "SAIR";
-                btnRegisto.classList.remove('btn-gradient');
-                btnRegisto.classList.add('btn-outline');
-                btnRegisto.style.borderColor = "#ef4444";
-                btnRegisto.style.color = "#ef4444";
-                btnRegisto.onclick = async () => {
-                    await signOut(auth);
-                    window.location.reload();
-                };
-            } else {
-                 // Se não estiver logado, os botões mandam para a página inicial (onde está o formulário)
-                btnLogin.onclick = () => window.location.href = 'index.html';
-                btnRegisto.onclick = () => window.location.href = 'index.html';
-            }
-        });
-    </script>
+    <script src="js/ui.js"></script>
+    <script type="module" src="js/auth.js"></script>
 
 </body>
 </html>
