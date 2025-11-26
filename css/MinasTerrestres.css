@@ -3,9 +3,9 @@
    ========================================= */
 
 .game-section {
-    padding-top: 140px; /* Ajuste para não bater na navbar */
+    padding-top: 80px; /* Ajuste para não bater na navbar */
     padding-bottom: 60px;
-    min-height: 100vh;
+    min-height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;

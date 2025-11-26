@@ -15,28 +15,21 @@
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="container nav-content">
-            <a href="Pagina-Inicial-Casino.html" class="logo, logo-text"> </a>
+    <nav class="navbar" style="position: relative; height: auto; border-bottom: 1px solid rgba(255,255,255,0.1);">
+        <div class="container nav-content" style="padding: 15px 20px;">
             <div class="logo">
-                <img src="./Imagens-Casino/SobrosaRoyalCasino.png" class="logo-img" alt="Sobrosa Logo" style="width: 60px; height: 60px; object-fit:contain;" >
+                <img src="./Imagens-Casino/SobrosaRoyalCasino.png" class="logo-img" alt="Sobrosa Logo" style="width: 100px; height: 100px;">
                 <div class="logo-text">
-                    <h1>SOBROSA ROYAL</h1>
-                    <span>Casino • Minas</span>
+                    <h1 style="font-size: 1.5rem;">SOBROSA ROYAL</h1>
+                    <span>Minas • Terrestres</span>
                 </div>
             </div>
-
-            <div class="nav-links">
-                <a href="Pagina-Inicial-Casino.html">Inicio</a>
-                <a href="Pagina-Inicial-Casino.html#jogos">Jogos</a>
-                <a href="PromoçõesCasino.html">Promoções</a>
-                <a href="VIP.html">VIP</a>
-            </div>
-
             <div class="nav-actions">
-                <button class="btn btn-outline" style="border-color: var(--gold); color: var(--gold);">
-                    <span id="saldoDisplay">1000.00 €</span>
-                </button>
+                <div style="margin-right: 20px;">
+                    <span style="color: var(--text-gray); font-size: 0.8rem;">Saldo:</span>
+                    <span class="text-gold" style="font-weight: 700; font-size: 1.1rem;">€ <span id="userBalance">1000</span></span>
+                </div>
+                <a href="index.html" class="btn btn-outline"><i class="fa-solid fa-arrow-left"></i> Sair</a>
             </div>
         </div>
     </nav>
