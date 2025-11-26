@@ -1,33 +1,41 @@
-// --- CONFIGURAÇÕES DO JOGO ---
+// --- 1. CONFIGURAÇÕES E VARIÁVEIS ---
 let saldo = 1000.00;
 let jogoAtivo = false;
 let aposta = 10;
 let minas = 1;
-let tamanhoGrid = 5; // Padrão 5x5
+let tamanhoGrid = 5;
 let totalTiles = 25;
 
-let grelhaLogica = []; // 0=Gema, 1=Bomba
+let grelhaLogica = []; 
 let tilesClicados = 0;
 let multAtual = 1.00;
 
-// --- ELEMENTOS HTML ---
+// --- 2. SELEÇÃO DE ELEMENTOS (IDs TÊM DE BATER CERTO COM O HTML) ---
 const gridEl = document.getElementById('minesGrid');
 const saldoEl = document.getElementById('saldoDisplay');
-const btnMain = document.getElementById('actionButton');
+const btnAcao = document.getElementById('actionButton'); // Nome corrigido
 const msgEl = document.getElementById('gameMessage');
 const betInput = document.getElementById('betAmount');
 const mineInput = document.getElementById('customMines');
 const multEl = document.getElementById('currentMultiplier');
 const profitEl = document.getElementById('nextProfit');
 
-// Inicializa o jogo
-window.onload = function() {
-    // Força o tamanho 5x5 logo no início
-    mudarTamanho(5); 
-};
+// Verifica se encontrou tudo (Aparece na consola F12)
+console.log("Sistema de Minas Iniciado...");
+if(!gridEl) console.error("ERRO: Não encontrei a Grelha (minesGrid)");
+if(!btnAcao) console.error("ERRO: Não encontrei o Botão (actionButton)");
 
-// --- FUNÇÃO 1: MUDAR TAMANHO DO CAMPO ---
-function mudarTamanho(t) {
+// --- 3. INICIALIZAÇÃO ---
+// Garante que corre apenas quando a página estiver pronta
+document.addEventListener('DOMContentLoaded', () => {
+    criarGrelhaVisual();
+    atualizarSaldoDisplay();
+});
+
+// --- 4. FUNÇÕES GLOBAIS (Para os botões do HTML funcionarem) ---
+
+// Mudar Tamanho (3x3, 5x5, 7x7)
+window.mudarTamanho = function(t) {
     if(jogoAtivo) return;
 
     tamanhoGrid = t;
@@ -39,22 +47,32 @@ function mudarTamanho(t) {
         if(btn.innerText.includes(t + 'x')) btn.classList.add('active');
     });
 
-    // Atualiza o CSS da Grid
+    // Atualiza CSS
     gridEl.style.gridTemplateColumns = `repeat(${t}, 1fr)`;
 
-    // Se tiver minas a mais para o novo tamanho, reseta para 1
-    if(minas >= totalTiles) {
-        setMinas(1);
-    }
+    // Segurança para minas
+    let maxMinas = totalTiles - 1;
+    if(minas >= maxMinas) setMinas(1);
 
     criarGrelhaVisual();
 }
 
-// --- FUNÇÃO 2: DEFINIR MINAS ---
-function setMinas(n) {
+// Mudar Aposta (1/2 ou 2x)
+window.ajustarAposta = function(multiplicador) {
+    if(jogoAtivo) return;
+    let val = parseFloat(betInput.value) * multiplicador;
+    if(val < 1) val = 1;
+    if(val > saldo) val = saldo;
+    
+    betInput.value = val.toFixed(0);
+    aposta = val;
+}
+
+// Mudar Minas
+window.setMinas = function(n) {
     if(jogoAtivo) return;
     
-    // Validação
+    // Limites
     if(n >= totalTiles) n = totalTiles - 1;
     if(n < 1) n = 1;
 
@@ -67,46 +85,32 @@ function setMinas(n) {
     });
 }
 
-function atualizarBotaoMinas() {
+window.atualizarBotaoMinas = function() {
     let val = parseInt(mineInput.value);
+    if(isNaN(val)) val = 1;
     setMinas(val);
 }
 
-// --- FUNÇÃO 3: AJUSTAR APOSTA ---
-function ajustarAposta(multiplicador) {
-    if(jogoAtivo) return;
-    let val = parseFloat(betInput.value) * multiplicador;
-    if(val < 1) val = 1;
-    betInput.value = val.toFixed(0);
-}
+// --- 5. LÓGICA DO JOGO ---
 
-// --- FUNÇÃO 4: CRIAR GRELHA VISUALMENTE ---
-function criarGrelhaVisual() {
-    gridEl.innerHTML = '';
-    
-    for(let i=0; i<totalTiles; i++) {
-        let tile = document.createElement('div');
-        tile.classList.add('tile');
-        
-        // Ajuste de fonte para grelha 7x7
-        if(tamanhoGrid === 7) tile.style.fontSize = "1rem";
-        
-        tile.onclick = function() { clicarTile(i, tile); };
-        gridEl.appendChild(tile);
-    }
+// Clique no Botão Principal
+if(btnAcao) {
+    btnAcao.addEventListener('click', () => {
+        if(jogoAtivo) {
+            cashout();
+        } else {
+            iniciarJogo();
+        }
+    });
 }
-
-// --- FUNÇÃO 5: COMEÇAR O JOGO ---
-btnMain.onclick = function() {
-    if(jogoAtivo) {
-        cashout(); // Se já joga, o botão serve para levantar
-    } else {
-        iniciarJogo();
-    }
-};
 
 function iniciarJogo() {
     aposta = parseFloat(betInput.value);
+
+    if(isNaN(aposta) || aposta < 1) {
+        msgEl.innerText = "Aposta inválida!";
+        return;
+    }
     
     if(aposta > saldo) {
         msgEl.innerText = "Saldo Insuficiente!";
@@ -114,26 +118,28 @@ function iniciarJogo() {
         return;
     }
 
-    // Deduz Saldo
+    // Deduzir Saldo
     saldo -= aposta;
-    atualizarSaldo();
+    atualizarSaldoDisplay();
 
     // Reset Variáveis
     jogoAtivo = true;
     tilesClicados = 0;
     multAtual = 1.00;
     msgEl.innerText = "";
+    multEl.innerText = "1.00x";
+    profitEl.innerText = "€" + aposta.toFixed(2);
 
-    // Atualiza UI
-    btnMain.innerText = "LEVANTAR AGORA";
-    btnMain.classList.add('btn-cashout');
-    btnMain.classList.remove('btn-primary');
+    // Interface
+    btnAcao.innerText = "LEVANTAR AGORA";
+    btnAcao.classList.add('btn-cashout');
+    btnAcao.classList.remove('btn-primary');
     betInput.disabled = true;
+    mineInput.disabled = true;
 
-    // Gerar Minas (Lógica)
+    // Gerar Bombas
     grelhaLogica = Array(totalTiles).fill(0);
     let colocadas = 0;
-    
     while(colocadas < minas) {
         let r = Math.floor(Math.random() * totalTiles);
         if(grelhaLogica[r] === 0) {
@@ -142,22 +148,37 @@ function iniciarJogo() {
         }
     }
 
-    criarGrelhaVisual(); // Limpa a grelha visualmente
-    atualizarCalculos();
+    criarGrelhaVisual();
 }
 
-// --- FUNÇÃO 6: CLIQUE NO QUADRADO ---
+function criarGrelhaVisual() {
+    gridEl.innerHTML = '';
+    
+    for(let i=0; i<totalTiles; i++) {
+        let tile = document.createElement('div');
+        tile.classList.add('tile');
+        
+        // Ajuste CSS
+        if(tamanhoGrid === 7) tile.style.fontSize = "1rem";
+        
+        // Clique no quadrado
+        tile.onclick = function() { clicarTile(i, tile); };
+        
+        gridEl.appendChild(tile);
+    }
+}
+
 function clicarTile(idx, el) {
     if(!jogoAtivo) return;
     if(el.classList.contains('revealed')) return;
 
     el.classList.add('revealed');
 
-    // Se for BOMBA
+    // BOMBA
     if(grelhaLogica[idx] === 1) {
         gameOver(idx);
     } 
-    // Se for GEMA
+    // GEMA
     else {
         el.classList.add('gem');
         el.innerHTML = '<i class="fa-regular fa-gem"></i>';
@@ -165,43 +186,33 @@ function clicarTile(idx, el) {
         
         calcularMultiplicador();
 
-        // Se encontrou todas as gemas
+        // Ganhou tudo
         if(tilesClicados === (totalTiles - minas)) {
             cashout();
         }
     }
 }
 
-// --- FUNÇÃO 7: CÁLCULOS ---
 function calcularMultiplicador() {
     let casasLivres = totalTiles - (tilesClicados - 1);
     let gemasLivres = (totalTiles - minas) - (tilesClicados - 1);
     
     let prob = casasLivres / gemasLivres;
-    multAtual = multAtual * prob * 0.99; // House edge
+    multAtual = multAtual * prob * 0.99; // Margem da casa
     
     multEl.innerText = multAtual.toFixed(2) + "x";
-    atualizarCalculos();
-}
-
-function atualizarCalculos() {
+    
     let ganho = aposta * multAtual;
     profitEl.innerText = "€" + ganho.toFixed(2);
     
-    if(tilesClicados > 0) {
-        btnMain.innerText = `LEVANTAR €${ganho.toFixed(2)}`;
-    } else {
-        btnMain.innerText = "ESCOLHE UM QUADRADO";
-    }
+    btnAcao.innerText = `LEVANTAR €${ganho.toFixed(2)}`;
 }
 
-// --- FUNÇÃO 8: TERMINAR JOGO ---
 function cashout() {
     let ganho = aposta * multAtual;
     saldo += ganho;
     
-    msgEl.innerText = `GANHASTE €${ganho.toFixed(2)}!`;
-    msgEl.style.color = "#10b981";
+    msgEl.innerHTML = `<span style="color:#10b981">GANHASTE €${ganho.toFixed(2)}!</span>`;
     
     terminarJogo(false);
 }
@@ -211,29 +222,26 @@ function gameOver(idx) {
     el.classList.add('bomb', 'exploded');
     el.innerHTML = '<i class="fa-solid fa-bomb"></i>';
     
-    msgEl.innerText = `BOOM! Perdeste €${aposta.toFixed(2)}`;
-    msgEl.style.color = "#ef4444";
+    msgEl.innerHTML = `<span style="color:#ef4444">BOOM! Perdeste €${aposta.toFixed(2)}</span>`;
     
     terminarJogo(true);
 }
 
 function terminarJogo(perdeu) {
     jogoAtivo = false;
-    atualizarSaldo();
+    atualizarSaldoDisplay();
 
     // Revelar tudo
     for(let i=0; i<totalTiles; i++) {
         let el = gridEl.children[i];
-        el.classList.add('revealed'); // Bloqueia tudo
+        el.classList.add('revealed');
         
         if(grelhaLogica[i] === 1) {
-            // Se é bomba
             if(!el.classList.contains('exploded')) {
                 el.classList.add('bomb');
                 el.innerHTML = '<i class="fa-solid fa-bomb" style="opacity:0.6"></i>';
             }
         } else {
-            // Se é gema
             if(!el.classList.contains('gem')) {
                 el.style.opacity = "0.3";
                 el.innerHTML = '<i class="fa-regular fa-gem"></i>';
@@ -241,13 +249,14 @@ function terminarJogo(perdeu) {
         }
     }
 
-    // Reset UI
-    btnMain.innerText = "JOGAR NOVAMENTE";
-    btnMain.classList.remove('btn-cashout');
-    btnMain.classList.add('btn-primary');
+    // Reset Botão
+    btnAcao.innerText = "JOGAR NOVAMENTE";
+    btnAcao.classList.remove('btn-cashout');
+    btnAcao.classList.add('btn-primary');
     betInput.disabled = false;
+    mineInput.disabled = false;
 }
 
-function atualizarSaldo() {
-    saldoEl.innerText = saldo.toFixed(2) + " €";
+function atualizarSaldoDisplay() {
+    if(saldoEl) saldoEl.innerText = saldo.toFixed(2) + " €";
 }
