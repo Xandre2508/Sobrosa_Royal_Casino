@@ -83,7 +83,7 @@ onAuthStateChanged(auth, async (user) => {
                     if(navBlock) {
                         navBlock.innerHTML = `
                             <div class="user-display" style="margin-right: 15px; color: white; font-weight: bold;">
-                                <i class="fa-solid fa-user"></i> ${nome}
+                               <button class="btn btn-outline fa-solid fa-user"  style="border-color: #white; color: #white;"><a href="InformacoesJogador.html">${nome}</a></button>
                             </div>
                             <button class="btn btn-outline" id="logoutBtn" style="border-color: #ef4444; color: #ef4444;">SAIR</button>
                         `;

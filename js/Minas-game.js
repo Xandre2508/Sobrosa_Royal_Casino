@@ -1,3 +1,63 @@
+
+import { auth, db } from './config.js';
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+let balance = 0, currentBet = 0, multiplier = 1.00;
+let gameInterval, isRunning = false, hasBet = false, hasCashedOut = false;
+let currentUser = null;
+
+const els = {
+    balance: document.getElementById('userBalance'),
+    multiplier: document.getElementById('multiplier'),
+    rocket: document.getElementById('rocket'),
+    btn: document.getElementById('actionBtn'),
+    input: document.getElementById('betAmount'),
+    status: document.getElementById('statusMessage'),
+    history: document.getElementById('historyBar'),
+    winnings: document.getElementById('winningsDisplay')
+};
+
+// Carregar Dados
+// Monitoriza o login e carrega os dados
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        // --- UTILIZADOR LOGADO ---
+        currentUser = user;
+        const snap = await getDoc(doc(db, "users", user.uid));
+        if (snap.exists()) {
+            balance = snap.data().saldo;
+            updateDisplay();
+        }
+    } else {
+        // --- UTILIZADOR NÃO LOGADO ---
+        // Esperamos 500ms para garantir que não é apenas um atraso da internet
+        setTimeout(() => {
+            // Verificamos novamente se o utilizador continua null
+            if (!auth.currentUser) {
+                alert("⚠️ ACESSO RESTRITO ⚠️\n\nPrecisas de efetuar LOGIN ou criar conta para jogar Space Crash.");
+                window.location.href = "index.html"; // Só redireciona depois de clicar no OK do alerta
+            }
+        }, 500);
+    }
+});
+
+function updateDisplay() {
+    if(els.balance) els.balance.textContent = balance.toFixed(2);
+}
+
+async function saveBalance(newBal) {
+    balance = newBal;
+    updateDisplay();
+    if(currentUser) await updateDoc(doc(db, "users", currentUser.uid), { saldo: balance });
+}
+
+
+
+
+
+
+
 // ==================================================
 //  CONFIGURAÇÕES E ESTADO DO JOGO
 // ==================================================
@@ -11,6 +71,11 @@ let totalTiles = 25;
 let grelhaLogica = []; 
 let tilesClicados = 0;
 let multAtual = 1.00;
+
+
+
+
+
 
 // ==================================================
 //  SELEÇÃO DE ELEMENTOS
