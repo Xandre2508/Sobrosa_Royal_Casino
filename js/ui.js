@@ -8,7 +8,7 @@ if (savedName) {
     // Se houver nome salvo, mostra o estado de LOGADO
     navButtonsHTML = `
         <div class="user-display" style="margin-right: 15px; color: white; font-weight: bold;">
-            <i class="fa-solid fa-user"></i> ${savedName}
+            <button class="btn btn-outline fa-solid fa-user"  style="border-color: #white; color: #white;"><a href="InformacoesJogador.html">${savedName}</a></button>
         </div>
         <button class="btn btn-outline" id="logoutBtn" style="border-color: #ef4444; color: #ef4444;">SAIR</button>
     `;
